@@ -11,7 +11,6 @@ const LoginPage = () => {
     const [loginParam, setLoginParams] = useState({email : '',pw : ''})
     const { doLogin, moveToPath } = useCustomLogin()
     const navigate = useNavigate();
-    const dispatch = useDispatch();
 
     const handleChange = (e) => {
         loginParam[e.target.name] = e.target.value;
