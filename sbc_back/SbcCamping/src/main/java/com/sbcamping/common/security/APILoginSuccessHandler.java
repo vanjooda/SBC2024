@@ -14,6 +14,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
@@ -26,7 +27,8 @@ public class APILoginSuccessHandler implements AuthenticationSuccessHandler {
         MemberDTO memberDTO = (MemberDTO) authentication.getPrincipal();
 
         // 토큰 부여
-        Map<String, Object> claims = memberDTO.getClaims();
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("member", memberDTO);  // memberDTO 객체 자체를 claims에 추가
         String accessToken = JWTUtil.generateToken(claims, 10); // 20분 유효
         String refreshToken = JWTUtil.generateToken(claims, 60 * 24); // 24시간
         claims.put("access_token", accessToken);

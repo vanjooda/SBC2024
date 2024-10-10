@@ -13,7 +13,7 @@ export const loginPost = async (loginParam) => {
     form.append('password', loginParam.pw)
 
     const result = await axios.post(`${host}/auth/login`, form, header)
-    console.log(result);
+    console.log("로그인요청 결과 : ", result);
 
     return result.data;
 }

@@ -34,14 +34,14 @@ const beforeResponse = async (res) => {
     const data = res.data;
 
     if(data && data.error === "ERROR_ACCESS_TOKEN"){ // 해당 Error인 경우 리프레쉬 토큰으로 한 번 더 호출
-        const memberCookieValue = getCookie("member")
+        const memberCookieValue = getCookie("memberCookie")
         const result = await refreshJWT(memberCookieValue.accessToken, memberCookieValue.refreshToken);
         console.log("refresh JWT RESULT : ", result);
 
         memberCookieValue.accessToken = result.accessToken;
         memberCookieValue.refreshToken = result.refreshToken;
 
-        setCookie("member", JSON.stringify(memberCookieValue), 1);
+        setCookie("memberCookie", JSON.stringify(memberCookieValue), 1);
 
         // 갱신한 토큰으로 다시 시도
         const originalRequest = res.config

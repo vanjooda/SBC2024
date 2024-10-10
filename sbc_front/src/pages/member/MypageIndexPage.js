@@ -2,8 +2,14 @@ import BasicLayout from "../../layouts/BasicLayout";
 import MypageMenu from "../../layouts/MypageMenu";
 import {Outlet} from "react-router-dom";
 import useCustomLogin from "../../hooks/useCustomLogin";
+import {useSelector} from "react-redux";
 
 const MypageIndexPage = () => {
+
+    const loginState = useSelector(state => state.loginSlice);
+    const member = useSelector((state) => state.memberSlice);
+    console.log(member);
+
 
     // 로그인 여부 확인
     const {isLogin, moveToLoginReturn} = useCustomLogin()
@@ -16,6 +22,20 @@ const MypageIndexPage = () => {
             <MypageMenu/>
             <div>
                 <Outlet/>
+                {/* loginState.memberEmail은 현재 loginSlice의 memberEmail을 참조함 */}
+                <div>이메일: {loginState.member.memberEmail}</div>
+                <div>이름: {loginState.member.memberName}</div>
+                <div>생일 : {loginState.member.memberBirth}</div>
+
+                {/* member는 memberSlice에서 가져온 것 */}
+                {member ? (
+                    <div>
+                        <div>회원 이메일: {member.memberEmail}</div>
+                        <div>회원 이름: {member.memberName}</div>
+                    </div>
+                ) : (
+                    <div>회원 정보가 없습니다.</div>
+                )}
             </div>
         </BasicLayout>
     );

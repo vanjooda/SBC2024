@@ -10,7 +10,7 @@ const useCustomLogin = () => {
     const loginState = useSelector(state => state.loginSlice);
 
     // 로그인 여부 (email 정보 확인)
-    const isLogin = loginState.email ? true : false;
+    const isLogin = loginState.member.memberEmail ? true : false;
 
     // 로그인 함수
     const doLogin = async (loginParam) => {
