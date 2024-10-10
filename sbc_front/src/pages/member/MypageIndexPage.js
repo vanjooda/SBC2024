@@ -7,8 +7,6 @@ import {useSelector} from "react-redux";
 const MypageIndexPage = () => {
 
     const loginState = useSelector(state => state.loginSlice);
-    const member = useSelector((state) => state.memberSlice);
-    console.log(member);
 
 
     // 로그인 여부 확인
@@ -26,16 +24,6 @@ const MypageIndexPage = () => {
                 <div>이메일: {loginState.member.memberEmail}</div>
                 <div>이름: {loginState.member.memberName}</div>
                 <div>생일 : {loginState.member.memberBirth}</div>
-
-                {/* member는 memberSlice에서 가져온 것 */}
-                {member ? (
-                    <div>
-                        <div>회원 이메일: {member.memberEmail}</div>
-                        <div>회원 이름: {member.memberName}</div>
-                    </div>
-                ) : (
-                    <div>회원 정보가 없습니다.</div>
-                )}
             </div>
         </BasicLayout>
     );

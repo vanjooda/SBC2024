@@ -5,7 +5,6 @@ import {useState} from "react";
 import useCustomLogin from "../../hooks/useCustomLogin"
 import {useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
-import {setMember} from "../../slice/memberSlice";
 
 const LoginPage = () => {
 
@@ -27,7 +26,6 @@ const LoginPage = () => {
                     alert('이메일과 비밀번호를 확인해주세요.')
                 } else{
                     alert('로그인 성공')
-                    dispatch(setMember(data.member));
                     moveToPath('/')
                 }
             })
