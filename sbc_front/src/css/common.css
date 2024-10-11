@@ -10,7 +10,9 @@
 }
 
 /* footer */
-
+.terms:hover{
+    cursor: pointer;
+}
 #footerwrap{
     background: grey;
     color: white;

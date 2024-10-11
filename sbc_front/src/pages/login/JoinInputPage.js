@@ -358,6 +358,7 @@ const JoinInputPage = () => {
                             </Form.Label>
                             <Col sm={10}>
                                 <Form.Check
+                                    inline
                                     type="radio"
                                     label="남"
                                     name="memberGender"
@@ -366,6 +367,7 @@ const JoinInputPage = () => {
                                     onChange={handleChangeJoin}
                                 />
                                 <Form.Check
+                                    inline
                                     type="radio"
                                     label="여"
                                     name="memberGender"

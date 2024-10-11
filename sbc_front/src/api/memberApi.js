@@ -36,13 +36,33 @@ export const emailCheck = async (email) => {
     return res.data;
 }
 
-// 이름, 핸드폰 번호로 아이디 찾기
+// 이름 + 핸드폰 번호로 이메일 찾기
 export const findEmail = async (member) => {
     const header = {
         headers:{'Content-Type': 'application/json'}
     }
     const res = await axios.post(`${host}/auth/findemail`, JSON.stringify(member), header);
     console.log(res);
+    return res.data;
+}
+
+// 이름 + 이메일로 회원 조회
+export const findpwMember = async (member) => {
+    const header = {
+        headers:{'Content-Type': 'application/json'}
+    }
+    const res = await axios.post(`${host}/auth/findpw`, JSON.stringify(member), header);
+    console.log(res); // 일치하는 회원이 존재하면 "result" : "exist" 못 찾으면 "not_exist" 반환
+    return res.data;
+}
+
+// 비밀번호 찾기 - 비밀번호 변경
+export const modifyPw = async (memberDTO) => {
+    const header = {
+        headers:{'Content-Type': 'application/json'}
+    }
+    const res = await axios.post(`${host}/auth/modifypw`, JSON.stringify(memberDTO), header);
+    console.log(res); // "msg" : "success" 또는 "fail
     return res.data;
 }
 

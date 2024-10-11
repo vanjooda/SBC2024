@@ -9,7 +9,6 @@ import joinRouter from "./JoinRouter";
 import CamperRouter from "./CamperRouter";
 import {createBrowserRouter} from "react-router-dom";
 import resRouter from "../admin/router/resRouter";
-import memberRouter from "../admin/router/memberRouter";
 import camperRouter from "../admin/router/camperRouter";
 import noticeRouter from "../admin/router/noticeRouter";
 import qnaRouter from "../admin/router/qnaRouter";
@@ -30,8 +29,10 @@ const Login = lazy(() => import("../pages/login/LoginPage"))
 const Join = lazy(() => import("../pages/login/JoinIndexPage"))
 const FindPw = lazy(() => import("../pages/login/FindPwPage"))
 const FIndEmail = lazy(() => import("../pages/login/FindEmailPage"))
+const ModifyPw = lazy(() => import("../pages/login/FindPwModifyPage"))
 const MyPageIndex = lazy(() => import("../pages/member/MypageIndexPage"))
 const CamperIndex = lazy(() =>  import("../pages/campers/CamperIndexPage"))
+
 
 /*
 관리자 페이지
@@ -74,6 +75,10 @@ const root = createBrowserRouter([
     {
         path: "findpw",
         element: <Suspense fallback={Loading}><FindPw/></Suspense>
+    },
+    {
+        path: "findpw/mod",
+        element: <Suspense fallback={Loading}><ModifyPw/></Suspense>
     },
     {
         path: "findemail",
@@ -134,11 +139,6 @@ const root = createBrowserRouter([
     { // 기타 모든 경로에 대한 404 페이지
         path: "*",
         element: <div>404 페이지를 찾을 수 없습니다.</div>
-    },
-    {
-        path: `${A_prefix}member/`,
-        element: <Suspense fallback={Loading}><MemberIndex/></Suspense>,
-        children: memberRouter()
     },
     {
         path: `${A_prefix}campers/`,
