@@ -28,24 +28,24 @@ public class JWTCheckFilter extends OncePerRequestFilter {
         try {
             String accessToken = authHeaderStr.substring(7);
             Map<String, Object> claims = JWTUtil.validateToken(accessToken); // 토큰 검증
-            log.info("JWT Claims : {}", claims);
+            log.info("--------JWT Claims : {}", claims);
 
             // 사용자 정보
-            String email = (String) claims.get("email");
-            String pw = (String) claims.get("pw");
-            String name = (String) claims.get("name");
-            String phone = (String) claims.get("phone");
-            char gender = (char) claims.get("gender");
-            String birth = (String) claims.get("birth");
-            String local = (String) claims.get("local");
+            String memberEmail = (String) claims.get("memberEmail");
+            String memberPw = (String) claims.get("memberPw");
+            String memberName = (String) claims.get("memberName");
+            String memberPhone = (String) claims.get("memberPhone");
+            char memberGender = (char) claims.get("memberGender");
+            String memberBirth = (String) claims.get("memberBirth");
+            String memberLocal = (String) claims.get("memberLocal");
             String memberRole = (String) claims.get("memberRole");
             Long memberId = (Long) claims.get("memberId");
-            MemberDTO memberDTO = new MemberDTO(email, pw, name, phone, gender, birth, local, memberRole, memberId);
+            MemberDTO memberDTO = new MemberDTO(memberEmail, memberPw, memberName, memberPhone, memberGender, memberBirth, memberLocal, memberRole, memberId);
             log.info("memberDTO.getMemberEmail : {}", memberDTO.getMemberEmail());
 
             // ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆ getAuthorities() 동작 확인하세요
             // 인증 객체 생성(사용자 정보와 권한)
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(memberDTO, pw, memberDTO.getAuthorities());
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(memberDTO, memberPw, memberDTO.getAuthorities());
             // 사용자의 인증 상태 저장 (인증 완료)
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             filterChain.doFilter(request, response);
@@ -75,7 +75,7 @@ public class JWTCheckFilter extends OncePerRequestFilter {
         }
 
         // 회원가입 경로 예외
-        if(path.equals("/api/member/")){
+        if(path.startsWith("/api/member")){
             return true;
         }
 
@@ -87,7 +87,7 @@ public class JWTCheckFilter extends OncePerRequestFilter {
             return true;
         }
 
-        if(path.equals("/api/res/siteList")){
+        if(path.equals("/api/res")){
             return true;
         }
 

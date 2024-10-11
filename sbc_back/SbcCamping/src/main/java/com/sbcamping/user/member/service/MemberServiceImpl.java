@@ -1,8 +1,10 @@
 package com.sbcamping.user.member.service;
 
 import com.sbcamping.domain.Member;
+import com.sbcamping.domain.Reservation;
 import com.sbcamping.user.member.dto.MemberDTO;
 import com.sbcamping.user.member.repository.MemberRepository;
+import com.sbcamping.user.reservation.repository.ReservationRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -21,7 +24,19 @@ public class MemberServiceImpl implements MemberService{
 
     private final MemberRepository memberRepository;
 
+    private final ReservationRepository reservationRepository;
+
     private final PasswordEncoder passwordEncoder;
+
+    @Override
+    public List<Reservation> getMemberRes(Long memberId) {
+        List list = reservationRepository.findByMemberId(memberId);
+        log.info("예약내역 : " + list);
+        if(list == null){
+            list.add("예약내역이 없습니다.");
+        }
+        return list;
+    }
 
     // 비밀번호 인증 (회원정보 들어갈 때 사용)
     @Override

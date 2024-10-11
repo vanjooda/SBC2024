@@ -2,7 +2,9 @@ package com.sbcamping.user.member.controller;
 
 import com.sbcamping.domain.Member;
 import com.sbcamping.user.member.dto.MemberDTO;
+import com.sbcamping.user.member.service.MemberService;
 import com.sbcamping.user.member.service.MemberServiceImpl;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +18,7 @@ import java.util.Map;
 public class LoginController {
 
     @Autowired
-    private MemberServiceImpl memberService;
+    private MemberService memberService;
 
     // 이메일 중복체크 (구조명세서 변경하기)
     @GetMapping("/emailcheck")

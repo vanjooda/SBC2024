@@ -1,14 +1,19 @@
 package com.sbcamping.user.member.controller;
 
 import com.sbcamping.domain.Member;
+import com.sbcamping.domain.Reservation;
 import com.sbcamping.user.member.dto.MemberDTO;
+import com.sbcamping.user.member.service.MemberService;
 import com.sbcamping.user.member.service.MemberServiceImpl;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -17,7 +22,7 @@ import java.util.Map;
 public class MemberController {
 
     @Autowired
-    private MemberServiceImpl memberService;
+    private MemberService memberService;
 
     // 회원가입
     @PostMapping("/")
@@ -27,9 +32,11 @@ public class MemberController {
 
 
     // 나의 예약내역 조회
-    @GetMapping("/memberRes")
-    public void getMemberRes(){
-
+    @PostMapping("/memberRes")
+    public List<Reservation> getMemberReservations(@RequestBody Long memberId){
+        log.info("온건지 만건지", memberId);
+        List<Reservation> list = memberService.getMemberRes(memberId);
+        return list;
     }
 
     // 예약 상세 내역 조회

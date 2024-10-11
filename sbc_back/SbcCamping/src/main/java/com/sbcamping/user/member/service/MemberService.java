@@ -1,7 +1,10 @@
 package com.sbcamping.user.member.service;
 
 import com.sbcamping.domain.Member;
+import com.sbcamping.domain.Reservation;
 import com.sbcamping.user.member.dto.MemberDTO;
+
+import java.util.List;
 
 public interface MemberService {
     public void addMember(Member member);
@@ -13,4 +16,5 @@ public interface MemberService {
     public Member findMemberByNameAndEmail(Member member);
     public String updatePw(MemberDTO memberDTO);
     public String authPw(Member member);
+    public List<Reservation> getMemberRes(Long memberId);
 }
