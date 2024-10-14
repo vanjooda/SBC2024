@@ -1,3 +1,4 @@
+/* ----------------- 예약내역 ------------------- */
 /* 테이블 */
 .tablewrap{
     text-align: center;
@@ -25,6 +26,7 @@ td {
     margin: 0;
 }
 
+
 /* 버튼 */
 .resbtn{
     text-decoration-line: underline;
@@ -43,4 +45,21 @@ td {
     padding: 0.4rem 0.6rem;
     border-radius: 10px;
     background: palegoldenrod;
+}
+
+
+/* ------------------- 예약 상세 페이지 ------------------- */
+.resdetailtablewrap{
+    text-align: center;
+    margin: 20px 0px;
+}
+.resdetailtablewrap td:nth-child(1){
+    background: #eee;
+    min-width: 130px;
+}
+.resdetailtablewrap td:nth-child(2){
+    min-width: 130px;
+}
+.resdetailtablewrap button{
+    margin : 20px;
 }

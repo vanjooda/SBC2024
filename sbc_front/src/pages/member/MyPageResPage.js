@@ -1,17 +1,15 @@
 import "../../css/mypage.css"
 import {useSelector} from "react-redux";
-import {getReservations} from "../../api/mypageApi";
+import {cancleRes, getReservations} from "../../api/mypageApi";
 import useCustomLogin from "../../hooks/useCustomLogin";
 import {useEffect, useState} from "react";
 import useCustomMove from "../../hooks/useCustomMove";
+import {useNavigate} from "react-router-dom";
 
 const initState = {
     resList: [],
 }
 
-function handleCancel(resId) {
-    
-}
 
 function handleReview(resId) {
     
@@ -22,6 +20,7 @@ const MyPageResPage = () => {
     const loginState = useSelector((state) => state.loginSlice)
     const [serverData, setServerData] = useState(initState);
     const { refresh} = useCustomMove()
+    const navigate = useNavigate();
 
     const { exceptionHandle } = useCustomLogin()
     const memberId = loginState.member.memberId;
@@ -37,6 +36,20 @@ const MyPageResPage = () => {
     }, [refresh]);
 
 
+    const handleClickResId = (e) => {
+        const resId = e.target.value;
+        navigate(`/mypage/detail?resId=${resId}`);
+    };
+
+
+    function handleCancel(resId) {
+        try {
+            cancleRes(resId);
+            navigate('/mypage/res')
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     return (
         <div>
@@ -58,7 +71,7 @@ const MyPageResPage = () => {
                     <tbody>
                     {serverData.map((reservation) => (
                         <tr key={reservation.resId}>
-                            <td><button className="resbtn">{reservation.resId}</button></td>
+                            <td><button className="resbtn" onClick={handleClickResId} value={reservation.resId}>{reservation.resId}</button></td>
                             <td>{reservation.resDate}</td>
                             <td>{reservation.checkinDate}</td>
                             <td>{reservation.checkoutDate}</td>

@@ -43,9 +43,8 @@ const loginSlice = createSlice({
     extraReducers : (builder) => {
         builder.addCase(loginPostAsync.fulfilled, (state, action) => {
             // 로그인 완료
-            console.log('fulfilled', action.payload);
             const payload = action.payload;
-            console.log('payload 값 확인 : ', payload);
+            //console.log('payload 값 확인 : ', payload);
 
             if(!payload.error){
                 setCookie("memberCookie", JSON.stringify(payload),1); // 쿠키 1일

@@ -21,11 +21,11 @@ const LoginPage = () => {
     const handleClickLogin = (e) => {
         doLogin(loginParam)
             .then(data => {
-                console.log('로그인 정보', data);
+                //console.log('로그인 정보', data);
                 if(data.error){
                     alert('이메일과 비밀번호를 확인해주세요.')
                 } else{
-                    alert('로그인 성공')
+                    //alert('로그인 성공')
                     if(data.member.memberRole === 'ROLE_ADMIN'){
                         moveToPath('/api/admin')
                     }else{

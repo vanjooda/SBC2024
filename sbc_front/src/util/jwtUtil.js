@@ -6,9 +6,12 @@ const jwtAxios = axios.create();
 
 // Refresh Token
 const refreshJWT = async (accessToken, refreshToken) => {
-    const header = {headers: {"Authorization": `Bearer ${accessToken}`}};
-    const res = await axios.get(`http://localhost:8080/api/auth/refresh?refreshToken=${refreshToken}`, header);
-    console.log("-------------"+res.data);
+    const headers = {
+        "Authorization": `Bearer ${accessToken}`,
+        "X-Refresh-Token": refreshToken
+    };
+    const res = await axios.get(`http://localhost:8080/api/auth/refresh`, {headers});
+    console.log("refreshJWT-------------" + res.data);
     return res.data;
 }
 
@@ -55,10 +58,12 @@ const beforeResponse = async (res) => {
         setCookie("memberCookie", JSON.stringify(memberCookieValue), 1);
 
         // 갱신한 토큰으로 다시 시도
+        console.log('재시도');
         const originalRequest = res.config;
         originalRequest.headers.Authorization = `Bearer ${result.accessToken}`;
         return await axios(originalRequest);
     }
+
     return res;
 }
 
