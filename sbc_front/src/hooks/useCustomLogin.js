@@ -41,7 +41,7 @@ const useCustomLogin = () => {
         const errorStr = createSearchParams({error:errorMsg}).toString();
         if(errorStr === 'REQUIRE_LOGIN'){
             alert('회원만 이용가능합니다.');
-            navigate({pathname:'/login', search: errorStr})
+            //navigate({pathname:'/login', search: errorStr})
             return
         }
         if(ex.response.data.error === 'ERROR_ACCESSDENIED'){
