@@ -4,29 +4,42 @@ import com.sbcamping.admin.notice.dto.NoticeDTO;
 import com.sbcamping.admin.notice.repository.NoticeRepository;
 import com.sbcamping.domain.NoticeBoard;
 import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.modelmapper.ModelMapper;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 
-@Service
-@Transactional
+@Service    //서비스 파일임
+@Transactional  //트랜잭션처리
 @Log4j2
+@AllArgsConstructor //생성자 자동생성 
 public class NoticeServiceImpl implements NoticeService{
 
-    // NoticeRepository 필드 선언
+    // NoticeRepository 주입
     private final NoticeRepository noticeRepository;
+    //dto변환 도와주는 modelmapper
+    private final ModelMapper modelMapper;
 
-    // 생성자를 통해 NoticeRepository 주입
-    @Autowired
-    public NoticeServiceImpl(NoticeRepository noticeRepository) {
-        this.noticeRepository = noticeRepository;
+
+    @Override
+    public List<NoticeDTO> getAllNotices() {    //게시글 전체목록을 불러오는 메서드
+        log.info("공지글 전체 불러오는 메서드 시작");
+
+        // 모든 Site 엔티티를 가져옵니다.
+        List<NoticeBoard> notices = noticeRepository.findAll();
+
+        log.info("공지글 전체 불러오는 메서드 끝 ");
+        // ModelMapper를 사용하여 NoticeBoard 엔티티를 NoticeDTO로 변환한 후 리스트로 반환합니다.
+        return notices.stream()
+                .map(notice -> modelMapper.map(notice, NoticeDTO.class))
+                .toList();
+
     }
-
-
 
     @Override
     public void createNotice(String title,String content) {//게시글 작성 메서드
@@ -34,10 +47,12 @@ public class NoticeServiceImpl implements NoticeService{
 
         //게시글정보를 담은 객체 생성
         NoticeBoard noticeBoard = NoticeBoard.builder()
-                .nBoardTitle(title)
-                .nBoardContent(content)
-                .nBoardDate(LocalDateTime.now())//현재시간 할당, sysdate랑 비슷한가? =>p.s/변경사항 new Date였는데 LocalDateTime.now()로 변경 뉴데이트는 서버시간만 되는데 로컬데이트타임은 아마 시간 조정이 가능 한 듯?
-                .nBoardViews(0L)//조회메서드가 실행 될 때마다 View가 1씩 증가하게 해놓으면 될 듯?
+                .nboardTitle(title)
+                .nboardContent(content)
+                //현재시간 할당, sysdate랑 비슷한가? =>p.s/변경사항 new Date였는데
+                //LocalDateTime.now()로 변경 뉴데이트는 서버시간만 되는데 로컬데이트타임은 아마 시간 조정이 가능 한 듯?
+                .nboardDate(LocalDateTime.now())
+                .nboardViews(0L)//조회메서드가 실행 될 때마다 View가 1씩 증가하게 해놓으면 될 듯?
                 .build();
 
         //데이터베이스 저장작업은 DB연결,제약조건위반등으로 실패 할 수 있기 때문에 예외처리를 해주는게 좋다고함
@@ -46,7 +61,8 @@ public class NoticeServiceImpl implements NoticeService{
             //noticeRepository.save(notice)는 noticeBoard 객체를 데이터베이스에 저장한 후, 저장된 결과를 반환
             noticeRepository.save(noticeBoard);
             log.info("공지 등록 성공");
-        } catch (Exception e) {
+        } catch (Exception e) {//등록 실패처리
+
             log.error("공지 등록 실패: {}", e.getMessage());
             throw new RuntimeException("공지 등록 중 오류 발생", e);
         }
@@ -65,15 +81,20 @@ public class NoticeServiceImpl implements NoticeService{
                 .orElseThrow(() -> new RuntimeException("해당 ID의 공지사항이 존재하지 않습니다."));
 
         //조회수 증가 메서드
-        increaseViews(notice.getNBoardId());
+        increaseViews(notice.getNboardId());
 
-        // 엔티티를 DTO로 변환
-        NoticeDTO noticeDTO = new NoticeDTO();
-        noticeDTO.setNoticeId(notice.getNBoardId());
-        noticeDTO.setNoticeTitle(notice.getNBoardTitle());
-        noticeDTO.setNoticeContent(notice.getNBoardContent());
-        noticeDTO.setNoticeDate(notice.getNBoardDate());
-        noticeDTO.setNoticeView(notice.getNBoardViews());
+        // 엔티티를 DTO로 변환 수동변환했던 과거의 잔재
+       /* NoticeDTO noticeDTO = new NoticeDTO();
+        noticeDTO.setNboardId(notice.getNboardId());
+        noticeDTO.setNboardTitle(notice.getNBoardTitle());
+        noticeDTO.setNboardContent(notice.getNBoardContent());
+        noticeDTO.setNboardDate(notice.getNBoardDate());
+        noticeDTO.setNboardView(notice.getNBoardViews());*/
+
+        //매퍼 라이브러리를 이용해 엔티티를 DTO로 자동변환
+        //참조 객체명 = mapper.명령(생성해둔 엔티티인스턴스 객체 ,참조할 클래스 패일)
+        NoticeDTO noticeDTO = modelMapper.map(notice, NoticeDTO.class);
+
 
         log.info("공지 조회 메서드 끝");
 
@@ -87,11 +108,11 @@ public class NoticeServiceImpl implements NoticeService{
         NoticeBoard notice = noticeRepository.findById(noticeId)
                 .orElseThrow(() -> new RuntimeException("해당 ID의 공지사항이 존재하지 않습니다."));
 
-        //뷰단에서 기존 제목과 타이틀이 기본입력
+        //뷰단에서 기존 제목과 타이틀이 기본값
         notice.changeNBoardTitle(title);
         notice.changeNBoardContent(content);
 
-        noticeRepository.save(notice);
+
         log.info("공지 수정 메서드 끝");//디버깅
     }
     
@@ -109,7 +130,6 @@ public class NoticeServiceImpl implements NoticeService{
         log.info("공지 삭제 메서드 끝");
     }
 
-
     //조회수 증가 메서드
     @Override
     public void increaseViews(Long noticeId) {
@@ -118,15 +138,9 @@ public class NoticeServiceImpl implements NoticeService{
                 .orElseThrow();
 
         // 조회수 증가
-        notice.setNBoardViews(notice.getNBoardViews() + 1);
+        notice.setNboardViews(notice.getNboardViews() + 1);
 
-        // JPA의 영속성 컨텍스트가 엔티티를 관리하므로 save 호출 불필요
-        // noticeRepository.save(notice);
         log.info("조회수 증가 메서드 실행완료 ");
     }
-
-
-
-
 
 }

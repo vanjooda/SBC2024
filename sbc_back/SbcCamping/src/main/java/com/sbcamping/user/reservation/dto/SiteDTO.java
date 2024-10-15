@@ -10,6 +10,6 @@ import lombok.*;
 @Data
 public class SiteDTO {
 
-    private Long siteID;
+    private Long siteId;
 
 }

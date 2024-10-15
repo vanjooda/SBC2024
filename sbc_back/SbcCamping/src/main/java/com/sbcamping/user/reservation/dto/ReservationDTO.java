@@ -1,9 +1,13 @@
 package com.sbcamping.user.reservation.dto;
 
+import com.sbcamping.domain.Member;
+import com.sbcamping.domain.Site;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
 
 @Data
 @Builder
@@ -15,6 +19,10 @@ public class ReservationDTO {
     private String resUserName;
     private String resUserPhone;
     private Long resPeople;
-    private String resCancelReason;
+    private LocalDate checkinDate;
+    private LocalDate checkoutDate;
+    private Long resTotalPay;
+    private MemberDTO member;
+    private SiteDTO site;
 
 }

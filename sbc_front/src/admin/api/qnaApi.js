@@ -3,7 +3,7 @@ import axios from "axios"
 // 서버 주소
 export const API_SERVER_HOST = 'http://localhost:8080'
 
-const prefix = `${API_SERVER_HOST}/admin/qnas`
+const prefix = `${API_SERVER_HOST}/api/admin/qnas`
 
 // getList : 페이지 처리 및 전체 게시글 목록 가져오기
 export const getList = async (pageParam) => {

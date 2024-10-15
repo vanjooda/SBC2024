@@ -2,7 +2,7 @@
 
 import React from 'react';
 import AddComponent from '../../components/notice/AddComponent';
-import ListComponent from "../../components/notice/ListComponent";
+
 
 const AddPage = () => {
     return (

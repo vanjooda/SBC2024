@@ -10,8 +10,6 @@ import {useNavigate} from "react-router-dom";
 
 const RealTimeResPage = () => {
 
-
-
     const today = new Date();
     const currentYear = today.getFullYear();
     const currentMonth = today.getMonth() + 1;
@@ -20,7 +18,7 @@ const RealTimeResPage = () => {
     const [month, setMonth] = useState(currentMonth);
     const [direction, setDirection] = useState(null); // 방향 상태 추가
 
-    const monthsToAdd = 3;
+    const monthsToAdd = 2;
     const monthSum = (currentMonth + monthsToAdd - 1) % 12 + 1;
 
     const handleClick = (dir) => {

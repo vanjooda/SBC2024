@@ -20,9 +20,10 @@ public class MemberDTO extends User {
     private String memberBirth;
     private String memberLocal;
     private String memberRole;
+    private Long memberId;
 
     // 생성자
-    public MemberDTO(String email, String memberPw, String memberName, String memberPhone, char memberGender, String memberBirth, String memberLocal, String memberRole) {
+    public MemberDTO(String email, String memberPw, String memberName, String memberPhone, char memberGender, String memberBirth, String memberLocal, String memberRole, Long memberId) {
         super(email, memberPw, convertRoleToCollection(memberRole));
         this.memberEmail = email;
         this.memberPw = memberPw;
@@ -32,6 +33,7 @@ public class MemberDTO extends User {
         this.memberBirth = memberBirth;
         this.memberLocal = memberLocal;
         this.memberRole = memberRole;
+        this.memberId = memberId;
     }
 
     // 문자열을 Collection으로 변환하는 메서드
@@ -45,14 +47,15 @@ public class MemberDTO extends User {
     // 클레임(claim)은 인증 및 인가 시스템에서 사용자의 신원이나 권한에 대한 정보를 담고 있는 데이터 조각
     public Map<String, Object> getClaims(){
         Map<String, Object> claims = new HashMap<>();
-        claims.put("email", memberEmail);
-        claims.put("pw", memberPw);
-        claims.put("name", memberName);
-        claims.put("phone", memberPhone);
-        claims.put("gender", memberGender);
-        claims.put("birth", memberBirth);
-        claims.put("local", memberLocal);
-        claims.put("role", memberRole);
+        claims.put("memberEmail", memberEmail);
+        claims.put("memberPw", memberPw);
+        claims.put("memberName", memberName);
+        claims.put("memberPhone", memberPhone);
+        claims.put("memberGender", memberGender);
+        claims.put("memberBirth", memberBirth);
+        claims.put("memberLocal", memberLocal);
+        claims.put("memberRole", memberRole);
+        claims.put("memberId", memberId);
         return claims;
     }
 

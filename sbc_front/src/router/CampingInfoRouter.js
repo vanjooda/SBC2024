@@ -4,7 +4,7 @@ import { Navigate } from "react-router-dom";
 const Loading = <div>Loading . . .</div>
 const Introduction = lazy(() => import("../pages/campinginfo/IntroductionPage"))
 const HowToCome = lazy(() => import("../pages/campinginfo/HowToComePage"))
-const FacilityGuide = lazy(() => import("../pages/campinginfo/FacilityGuide"))
+const FacilityGuide = lazy(() => import("../pages/campinginfo/FacilityGuidePage"))
 
 
 const CampingInfoRouter = () => {

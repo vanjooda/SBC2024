@@ -26,36 +26,35 @@ public class Site {
     @Column(name = "Site_Name", nullable = false, length = 10, unique = true) //구역이름
     private String siteName;
 
-    @Column(nullable = false, length = 1)    // 예약 가능여부
-    private char siteIsavailable = 'N';
+    @Column(name = "SITE_ISAVAILABLE",nullable = false, length = 1)    // 예약 가능여부
+    private char siteIsAvailable = 'N';
 
     @Column(name = "Site_Res_Limit", nullable = false, length = 1)      // 예약 제한
     private char siteResLimit = 'N';
 
     @Column(name = "Site_Weekend_Pay", nullable = false, columnDefinition = "NUMBER(10,0)") // 주말가격
     @Builder.Default    //값이 정해져 있기 떄문에 사용
-    private Long siteWeekendPay = 80000L;
+    private Long WeekendPay = 80000L;
 
     @Column(name = "Site_Weekday_Pay", nullable = false, columnDefinition = "NUMBER(10,0)") // 평일가격
     @Builder.Default
-    private Long siteWeekdayPay = 40000L;
+    private Long weekdayPay = 40000L;
 
     @Column(name = "Site_Min_People", nullable = false, columnDefinition = "NUMBER(1,0)") // 최소인원
     @Builder.Default
-    private Long siteMinPeople = 4L;
+    private Long minPeople = 4L;
 
     @Column(name = "Site_Max_People", nullable = false, columnDefinition = "NUMBER(1,0)") // 최대인원
     @Builder.Default
-    private Long siteMaxPeople = 6L;
+    private Long maxPeople = 6L;
 
     //
     public void changeSiteName(String Name) {
         this.siteName = Name;
     }
 
-
     public void changeIsAvailable(char IsAvailable) {
-        this.siteIsavailable = IsAvailable;
+        this.siteIsAvailable = IsAvailable;
     }
 
     public void changeResLimit(char ResLimit) {
@@ -63,19 +62,19 @@ public class Site {
     }
 
     public void changeWeekendPay(Long WeekendPay) {
-        this.siteWeekendPay = WeekendPay;
+        this.WeekendPay = WeekendPay;
     }
 
     public void changeWeekdayPay(Long WeekdayPay) {
-        this.siteWeekdayPay = WeekdayPay;
+        this.weekdayPay = WeekdayPay;
     }
 
     public void changeMinPeople(Long MinPeople) {
-        this.siteMinPeople = MinPeople;
+        this.minPeople = MinPeople;
     }
 
     public void changeMaxPeople(Long MaxPeople) {
-        this.siteMaxPeople = MaxPeople;
+        this.maxPeople = MaxPeople;
     }
 
 

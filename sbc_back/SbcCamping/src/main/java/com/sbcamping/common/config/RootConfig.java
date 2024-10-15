@@ -6,9 +6,9 @@ import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-@Configuration
+@Configuration("adminRootConfig")
 public class RootConfig {
-    @Bean
+    @Bean("adminMapper")    //관리자 매퍼
     public ModelMapper getMapper() {
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration().setFieldMatchingEnabled(true)

@@ -3,7 +3,7 @@ import axios from "axios"
 // 서버 주소
 export const API_SERVER_HOST = 'http://localhost:8080'
 
-const prefix = `${API_SERVER_HOST}/admin/member`
+const prefix = `${API_SERVER_HOST}/api/admin/member`
 
 // 전체회원리스트 불러오기 : getList
 export const getFullList = async (pageParam) => {

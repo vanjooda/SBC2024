@@ -32,15 +32,14 @@ public class Reservation {
     private Long resPeople; // 인원수
 
     @Column(name = "CHECKIN_DATE", nullable = false)
-    @Temporal(TemporalType.DATE)
     private LocalDate checkinDate; // 입실 날짜
 
     @Column(name = "CHECKOUT_DATE", nullable = false)
-    @Temporal(TemporalType.DATE)
+
     private LocalDate checkoutDate; // 퇴실 날짜
 
     @Column(name = "RES_DATE", nullable = false)
-    @Temporal(TemporalType.DATE)
+
     private LocalDate resDate;// 예약 날짜
 
     @Column(name = "RES_STATUS", nullable = false, length = 10)
@@ -51,7 +50,6 @@ public class Reservation {
     private Long resTotalPay; // 결제금액
 
     @Column(name = "RES_CANCEL_DATE")
-    @Temporal(TemporalType.DATE)
     private LocalDate resCancelDate; // 취소날짜
 
     @Column(name = "RES_CANCEL_REASON", length = 100)

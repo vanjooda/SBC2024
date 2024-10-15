@@ -3,6 +3,7 @@ package com.sbcamping.user.reservation.controller;
 import com.sbcamping.domain.Member;
 import com.sbcamping.domain.Reservation;
 import com.sbcamping.domain.Site;
+import com.sbcamping.user.reservation.dto.ReservationDTO;
 import com.sbcamping.user.reservation.service.ReservationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@RestController("userResController")    //사용자 예약 컨트롤러
 @RequiredArgsConstructor
 @Log4j2
 @RequestMapping("/api/res")
@@ -19,11 +20,13 @@ public class ResController {
 
     private final ReservationService service;
 
-    @PreAuthorize("ROLE_USER")
-    @PostMapping("/")
-    public String register(@RequestBody Reservation reservation) {
 
-        service.register(reservation);
+    @PostMapping("/")
+    public String register(@RequestBody ReservationDTO reservationDTO) {
+
+        Reservation reservation = service.register(reservationDTO);
+
+        log.info(reservation);
 
         return reservation.getResId();
     }
@@ -35,7 +38,7 @@ public class ResController {
         return service.getSite();
     }
 
-    @PreAuthorize("ROLE_USER")
+    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/memberList")
     public List<Member> getMember() {
 

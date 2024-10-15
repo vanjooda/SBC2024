@@ -6,7 +6,7 @@ import axios from "axios";/*백엔드와 통신하기위해 import*/
 const backUrl= "http://localhost:8080";   //백엔드 기본경로 변수에 할당
 
 //백엔드 경로와 매핑명을 합쳐서
-export const siteHost = `${backUrl}/admin/site`
+export const siteHost = `${backUrl}/site`
 
 // 기본 Axios 인스턴스 설정 (필요 시)
 const axiosInstance = axios.create({

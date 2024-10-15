@@ -5,6 +5,7 @@ import com.sbcamping.domain.Member;
 import com.sbcamping.domain.Reservation;
 import com.sbcamping.domain.Site;
 import com.sbcamping.user.member.repository.MemberRepository;
+import com.sbcamping.user.reservation.dto.ReservationDTO;
 import com.sbcamping.user.reservation.repository.ReservationRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +16,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -35,7 +35,17 @@ public class ReservationServiceImpl implements ReservationService {
     private static int number = 1;
 
     @Override
-    public void register(Reservation reservation) {
+    public Reservation register(ReservationDTO reservationDTO) {
+        if (reservationDTO.getMember() == null || reservationDTO.getSite() == null) {
+            throw new IllegalArgumentException("Member ID and Site ID must not be null");
+        }
+
+        Long memberId = reservationDTO.getMember().getMemberId();
+        Long siteId = reservationDTO.getSite().getSiteId();
+
+        log.info("MemberId: ", memberId);
+        log.info("SiteId: ", siteId);
+
         // 예약번호를 생성해서 만들어야되는데 어케하지? 날짜+01 .. 02 .. 03
         LocalDate date = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
@@ -47,21 +57,32 @@ public class ReservationServiceImpl implements ReservationService {
 
         String resId = formattedDate + formattedNumber;
 
-        reservation.setResId(resId);
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new IllegalArgumentException("Member not found"));
+        Site site = siteRepository.findById(siteId)
+                .orElseThrow(() -> new IllegalArgumentException("Site not found"));
 
-        log.info("---------------------------------------------");
-        log.info(reservation);
+        log.info("--------------------------------------------------------------------");
+        log.info(member);
+        log.info("--------------------------------------------------------------------");
+        log.info(site);
+
+        Reservation reservation = Reservation.builder()
+                .resId(resId)
+                .resUserName(reservationDTO.getResUserName())
+                .resUserPhone(reservationDTO.getResUserPhone())
+                .resPeople(reservationDTO.getResPeople())
+                .checkinDate(reservationDTO.getCheckinDate())
+                .checkoutDate(reservationDTO.getCheckoutDate())
+                .resTotalPay(reservationDTO.getResTotalPay())
+                .resDate(LocalDate.now())
+                .member(member)
+                .site(site)
+                .build();
 
         reservationRepository.save(reservation);
 
-    }
-
-    @Override
-    public Reservation get(String RES_ID) {
-
-        Optional<Reservation> result = reservationRepository.findById(Long.valueOf(RES_ID));
-
-        return result.orElseThrow();
+        return reservation;
     }
 
     @Override

@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import {createNotice} from "../../api/NoticeApi"; // API 모듈에서 함수 가져오기 -공지사항 생성 함수
 
 const AddComponent = () => {
     const navigate = useNavigate(); // 페이지 이동을 위한 훅
@@ -10,36 +11,45 @@ const AddComponent = () => {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
 
-    // 폼 제출 핸들러
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    // 공지글 작성시 실패문구를 저장
+    const [error, setError] = useState('');
 
-        // 입력 필드 검증
-        if (title.trim() === '' || content.trim() === '') {
-            alert('제목과 내용을 모두 입력하세요.');
-            return;
-        }
+    // 공지사항을 추가하는 함수
+    const addNotice = (e) => {
+        e.preventDefault(); // 폼 제출 시 페이지 새로고침 방지
 
-        // 제출 로직 (예: API 호출)
-        console.log('공지사항 추가:', { title, content });
+        // 공지사항 제목과 내용을 담은 지역 객체 생성
+        const noticeData = {
+            nboardTitle: title, // 사용자가 입력한 제목
+            nboardContent: content // 사용자가 입력한 내용
+        };
 
-        // 입력 필드 초기화
-        setTitle('');
-        setContent('');
-
-        // 작성 완료 후 공지사항 목록 페이지로 이동
-        navigate('/notice/list');
+        // 서버에 POST 요청을 보내는 함수 호출
+        createNotice(noticeData)
+            .then(result => {
+                console.log("서버 응답:", result); // 서버 응답을 콘솔에 출력
+                navigate('/admin/notices/list'); // 공지사항 추가 완료 후 목록 페이지로 이동
+            })
+            .catch(e => {
+                console.error("API 호출 오류:", e); // 오류 발생 시 콘솔에 오류 출력
+                setError('공지글을 작성하는데 실패했습니다. 다시 시도해 주세요.'); // 오류 메시지 설정하여 사용자에게 알림
+            });
     };
+
+
+
 
     // 목록으로 버튼 클릭 핸들러
     const handleBackToList = () => {
-        navigate('/notice/list');
+        navigate('/admin/notices/list');
     };
+
+
 
     return (
         <div className="max-w-7xl mx-auto p-6 bg-white rounded-lg shadow-md border-2 border-gray-400">
             <h2 className="text-2xl font-bold mb-4">공지사항 추가</h2>
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={addNotice} className="space-y-4">
                 <div>
                     <label className="block text-gray-700">공지 제목</label>
                     <input

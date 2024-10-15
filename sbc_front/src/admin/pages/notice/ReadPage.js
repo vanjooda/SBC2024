@@ -3,6 +3,7 @@
 import React from 'react';
 import ReadComponent from '../../components/notice/ReadComponent';
 
+
 const ReadPage = () => {
     return (
         <div>

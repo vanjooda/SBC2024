@@ -29,7 +29,7 @@ public class AdminMemberSerivceImpl implements AdminMemberService {
     private final ModelMapper modelMapper;
 
     @Autowired
-    private final AdminMemberRepository memberRepository;
+    private final AdminMemberRepository adminMemberRepository;
 
     @Transactional(readOnly = true)
     @Override
@@ -46,7 +46,7 @@ public class AdminMemberSerivceImpl implements AdminMemberService {
             }
         }
 
-        Page<Member> members = memberRepository.findAll(pageable);
+        Page<Member> members = adminMemberRepository.findAll(pageable);
 
         long totalCount = members.getTotalElements();
 
@@ -74,7 +74,7 @@ public class AdminMemberSerivceImpl implements AdminMemberService {
             }
         }
 
-        Page<Member> members = memberRepository.selectInactive(pageable);
+        Page<Member> members = adminMemberRepository.selectInactive(pageable);
 
         long totalCount = members.getTotalElements();
 
@@ -109,7 +109,7 @@ public class AdminMemberSerivceImpl implements AdminMemberService {
 
         } else {
             pageable = PageRequest.of(requestDTO.getPage()-1, requestDTO.getSize(), Sort.by("memberID").ascending());
-            searchMembers = memberRepository.findAll(pageable);
+            searchMembers = adminMemberRepository.findAll(pageable);
         }
 
         long totalCount = searchMembers.getTotalElements();

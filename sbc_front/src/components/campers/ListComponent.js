@@ -15,10 +15,10 @@ const initState = {
     nextPage: 0,
     totalPage: 0,
     current: 0
-}
+};
 
 const ListComponent = () => {
-    const { page, size, refresh, moveToList, moveToRead } = useCustomMove();
+    const { page, size, refresh, moveToList, moveToRead, moveToAdd } = useCustomMove(); // moveToAdd 사용
     const [serverData, setServerData] = useState(initState);
 
     useEffect(() => {
@@ -67,13 +67,11 @@ const ListComponent = () => {
                         className="col-12 mb-2 p-2 border rounded shadow-sm"
                         onClick={() => {
                             console.log("CamperBoard:", camperBoard); // camperBoard 객체 출력
-                            //왜 여기서 Id를 ID로 바꾸니까 나왔을까?
                             handleReadPage(camperBoard.cboardID); // 클릭 시 cboardId 전달
                         }}
                         style={{ cursor: "pointer", maxWidth: "1200px" }} // 좌우 길이 최대값 설정
                     >
                         <div className="row text-center">
-                            {/*여기서 cboardId를 cboardID로 바꾸니까 정상적으로 출력됌*/}
                             <div className="col-1">{camperBoard.cboardID}</div> {/* cboardId 확인 */}
                             <div className="col-4 text-truncate">{camperBoard.cboardTitle}</div> {/* 제목 */}
                             <div className="col-4 text-truncate">{camperBoard.cboardContent}</div> {/* 내용 */}
@@ -83,9 +81,21 @@ const ListComponent = () => {
                     </div>
                 ))}
             </div>
-            <PageComponent serverData={serverData} movePage={moveToList}></PageComponent>
+
+            {/* 페이지 네비게이션과 등록 버튼 */}
+            <div className="d-flex justify-content-between align-items-center mt-3">
+                <PageComponent serverData={serverData} movePage={moveToList}></PageComponent>
+
+                {/* 등록 버튼 */}
+                <button
+                    className="btn btn-primary"
+                    onClick={() => moveToAdd("/addPage")} // 클릭 시 addPage로 이동
+                >
+                    등록
+                </button>
+            </div>
         </div>
     );
-}
+};
 
 export default ListComponent;

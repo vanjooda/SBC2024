@@ -1,110 +1,75 @@
-// src/admin/components/res/CancelList.js
-
 import React, { useState, useEffect } from 'react';
 import Table from 'react-bootstrap/Table';
-import { Button } from 'react-bootstrap';
 import Search from '../res/Search'; // 검색 컴포넌트 경로
+import { getAllRes } from '../../api/ResApi'; // 실제 데이터를 가져오기 위한 API 함수 임포트
 
 const CancelList = () => {
-    const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 15; // 페이지당 아이템 수를 15로 설정
+    // 예약 데이터를 저장하는 변수
+    const [reservations, setReservations] = useState([]);
+
+    // 에러 문구 세팅 변수
+    const [error, setError] = useState('');
+
+    // 검색어 상태 변수
     const [searchTerm, setSearchTerm] = useState('');
-    const [selectedColumn, setSelectedColumn] = useState('reservationNumber');
-    const [filteredItems, setFilteredItems] = useState([]);
 
-    // 샘플 데이터 배열 (예약 취소 데이터)
-    const reservations = Array.from({ length: 50 }).map((_, index) => ({
-        id: index + 1,
-        reservationNumber: `RES-${index + 1}`, // 예약번호 추가
-        reservationDate: `2024-02-${String(index + 1).padStart(2, '0')}`,
-        zoneName: 'Zone C',
-        memberName: '이영희',
-        memberPhone: '010-5555-6666',
-        userName: '취소자명',
-        userPhone: '010-7777-8888',
-        cancelDate: '2024-02-05',
-        payment: '50,000원'
-    }));
+    // 선택된 컬럼 상태 변수, 셀렉값의 기본은 예약번호
+    const [selectedColumn, setSelectedColumn] = useState('resId');
 
-    // 필터링된 데이터를 상태에 저장하고 페이지를 1로 초기화
+    // 데이터 불러오는 비동기 함수
+    const settingReservation = async () => {
+        try {
+            const data = await getAllRes(); // API 호출하여 데이터 가져오기
+            setReservations(data);
+        } catch (err) {
+            console.error('예약 취소 데이터를 불러오는데 실패했습니다:', err);
+            setError('예약 취소 데이터를 불러오는데 실패했습니다.');
+        }
+    };
+
+    // 컴포넌트 마운트 시 데이터 불러오기
     useEffect(() => {
-        const filtered = filterItems();
-        setFilteredItems(filtered);
-        setCurrentPage(1); // 검색 시 페이지를 첫 페이지로 초기화
-    }, [searchTerm, selectedColumn]);
-
-    // 선택된 컬럼을 변경하는 함수
-    const handleSelectChange = (e) => {
-        setSelectedColumn(e.target.value);
-        setSearchTerm(''); // 검색어 초기화
-    };
-
-    const filterItems = () => {
-        if (!searchTerm) {
-            return reservations; // 검색어가 없으면 모든 예약을 반환
-        }
-
-        return reservations.filter((reservation) => {
-            const value = reservation[selectedColumn];
-
-            if (selectedColumn === 'reservationDate') {
-                // 날짜 검색 시 문자열로 비교
-                return value && value.includes(searchTerm); // 문자열 비교
-            } else {
-                // 나머지 컬럼에 대해서는 문자열 비교
-                return value?.toString().toLowerCase().includes(searchTerm.toLowerCase());
-            }
-        });
-    };
+        settingReservation();
+    }, []);
 
 
-    // 현재 페이지의 데이터 계산
-    const indexOfLastItem = currentPage * itemsPerPage;
-    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentItems = filteredItems.slice(indexOfFirstItem, indexOfLastItem);
+    // 검색어와 선택된 컬럼에 따라 필터링된 예약 데이터 할당
+    const filteredReservations = reservations.filter((reservation) => {
 
-    // 총 페이지 수 계산
-    const totalPages = Math.ceil(filteredItems.length / itemsPerPage);
+        // resStatus가 "예약취소"가 아닌 경우 제외
+        if (reservation.resStatus !== "예약취소") return false;
 
-    // 현재 보여줄 페이지 번호 목록 계산 (1부터 10까지 표시)
-    const startPage = Math.floor((currentPage - 1) / 10) * 10 + 1;
-    const endPage = Math.min(startPage + 9, totalPages);
-    const pageNumbers = [];
-    for (let i = startPage; i <= endPage; i++) {
-        pageNumbers.push(i);
-    }
+        //검색어가 없다면 true를 반환해서 필터링 되지 않은 데이터를 출력
+        if (!searchTerm) return true;
 
-    // 페이지 변경 핸들러
-    const handlePageChange = (pageNumber) => setCurrentPage(pageNumber);
+        // 선택된 컬럼의 값을 문자열로 변환하고 소문자로 변경하여 대소문자를 구분하지 않도록 함
+        //밸류를 문자열로 바꾼후 LowerCase를 적용시킴
+        const value = reservation[selectedColumn]?.toString().toLowerCase();
 
-    // 이전 10페이지로 이동
-    const handlePrevGroup = () => {
-        if (startPage > 1) {
-            setCurrentPage(startPage - 1);
-        }
-    };
+        // 검색어를 소문자로 변환하고, 해당 값에 검색어가 포함되어 있는지 확인
+        // value.includes(searchTerm을 소문자로 변경한 값) - 포함된 것만 반환
+        return value?.includes(searchTerm.toLowerCase());
 
-    // 다음 10페이지로 이동
-    const handleNextGroup = () => {
-        if (endPage < totalPages) {
-            setCurrentPage(endPage + 1);
-        }
-    };
+
+    });
 
     return (
-        <div className="max-w-7xl mx-auto p-6 bg-white rounded-lg shadow-md">
-            <h2 className="mb-4">예약 취소 리스트</h2>
+        <div className="max-w-full mx-auto p-6 bg-white rounded-lg shadow-md">
+            {/* **페이지 제목** */}
+            <h2 className="text-2xl font-bold mb-4">예약 취소 리스트</h2>
 
-            {/* 검색 컴포넌트 */}
+            {/* 서치 컴포넌트(자식) */}
             <Search
                 searchTerm={searchTerm}
                 setSearchTerm={setSearchTerm}
                 selectedColumn={selectedColumn}
                 setSelectedColumn={setSelectedColumn}
-                onSearch={() => setFilteredItems(filterItems())} // onSearch 함수 추가
             />
-            <p className="mb-4 text-gray-500">날짜 형식: 년-월-일</p> {/* 날짜 형식에 대한 설명 추가 */}
 
+            {/* **에러 메시지 표시** */}
+            {error && <div className="text-danger mb-4">{error}</div>}
+
+            {/* **예약 정보 테이블** */}
             <Table bordered hover responsive className="text-sm">
                 <thead>
                 <tr>
@@ -121,69 +86,29 @@ const CancelList = () => {
                 </thead>
 
                 <tbody>
-                {currentItems.map((reservation) => (
-                    <tr key={reservation.id}>
-                        <td className="text-center">{reservation.reservationNumber}</td>
-                        <td className="text-center">{reservation.reservationDate}</td>
-                        <td className="text-left">{reservation.zoneName}</td>
-                        <td className="text-left">{reservation.memberName}</td>
-                        <td className="text-center">{reservation.memberPhone}</td>
-                        <td className="text-left">{reservation.userName}</td>
-                        <td className="text-center">{reservation.userPhone}</td>
-                        <td className="text-center">{reservation.cancelDate}</td>
-                        <td className="text-right">{reservation.payment}</td>
+                {filteredReservations.length > 0 ? (
+                    filteredReservations.map((reservation) => (
+                        <tr key={reservation.resId}>
+                            <td className="text-center">{reservation.resId}</td>
+                            <td className="text-center">{reservation.resDate}</td>
+                            <td className="text-left">{reservation.site.siteName}</td>
+                            <td className="text-left">{reservation.member.memberName}</td>
+                            <td className="text-center">{reservation.member.memberPhone}</td>
+                            <td className="text-left">{reservation.resUserName}</td>
+                            <td className="text-center">{reservation.resUserPhone}</td>
+                            <td className="text-center">{reservation.resCancelDate}</td>
+                            <td className="text-right">{reservation.resTotalPay}</td>
+                        </tr>
+                    ))
+                ) : (
+                    <tr>
+                        <td colSpan="9" className="text-center">예약 데이터가 없습니다.</td>
                     </tr>
-                ))}
+                )}
                 </tbody>
             </Table>
-
-            {/* 페이징 처리 */}
-            <div className="mt-4 d-flex justify-content-center">
-                <nav>
-                    <ul className="pagination">
-                        {/* 이전 10페이지로 이동 */}
-                        <li className={`page-item ${startPage === 1 ? 'disabled' : ''}`}>
-                            <Button
-                                className="page-link"
-                                onClick={handlePrevGroup}
-                                disabled={startPage === 1}
-                            >
-                                &laquo;
-                            </Button>
-                        </li>
-
-                        {pageNumbers.map((pageNumber) => (
-                            <li key={pageNumber} className={`page-item ${currentPage === pageNumber ? 'active' : ''}`}>
-                                <Button
-                                    className="page-link"
-                                    onClick={() => handlePageChange(pageNumber)}
-                                    style={{
-                                        color: currentPage === pageNumber ? 'white' : 'blue',
-                                        fontWeight: currentPage === pageNumber ? 'bold' : 'normal',
-                                        backgroundColor: currentPage === pageNumber ? 'blue' : 'transparent',
-                                        border: 'none'
-                                    }}
-                                >
-                                    {pageNumber}
-                                </Button>
-                            </li>
-                        ))}
-
-                        {/* 다음 10페이지로 이동 */}
-                        <li className={`page-item ${endPage === totalPages ? 'disabled' : ''}`}>
-                            <Button
-                                className="page-link"
-                                onClick={handleNextGroup}
-                                disabled={endPage === totalPages}
-                            >
-                                &raquo;
-                            </Button>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
         </div>
     );
-}
+};
 
 export default CancelList;

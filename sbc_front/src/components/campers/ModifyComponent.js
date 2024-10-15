@@ -12,7 +12,7 @@ const initState = {
     cboardContent: '',
     cboardDate: '', // 작성 날짜
     cboardViews: 0,
-    cboardAttachment: [],
+    cboardAttachment: null, // 단일 첨부파일로 수정
 };
 
 const ModifyComponent = ({ cBoardId }) => {
@@ -20,28 +20,27 @@ const ModifyComponent = ({ cBoardId }) => {
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
-   useEffect(() => {
-    getOne(cBoardId).then((data) => {
-        if (data) {
-            // 여기서 반환된 데이터의 구조에 맞게 상태를 설정
-            setTodo({
-                ...initState,
-                cboardId: data.cboardId, // cboardId 추가
-                member: data.member, // 작성자 정보
-                cboardCategory: data.cboardCategory,
-                cboardTitle: data.cboardTitle,
-                cboardContent: data.cboardContent,
-                cboardDate: data.cboardDate,
-                cboardViews: data.cboardViews,
-                cboardAttachment: data.cboardAttachment || [], // 첨부파일
-            });
-            console.log(data);
-        } else {
-            console.log("데이터가 없습니다.");
-        }
-    });
-}, [cBoardId]);
-
+    useEffect(() => {
+        getOne(cBoardId).then((data) => {
+            if (data) {
+                // 여기서 반환된 데이터의 구조에 맞게 상태를 설정
+                setTodo({
+                    ...initState,
+                    cboardId: data.cboardId, // cboardId 추가
+                    member: data.member, // 작성자 정보
+                    cboardCategory: data.cboardCategory,
+                    cboardTitle: data.cboardTitle,
+                    cboardContent: data.cboardContent,
+                    cboardDate: data.cboardDate,
+                    cboardViews: data.cboardViews,
+                    cboardAttachment: data.cboardAttachment || null, // 단일 첨부파일
+                });
+                console.log(data);
+            } else {
+                console.log("데이터가 없습니다.");
+            }
+        });
+    }, [cBoardId]);
 
     const handleClickModify = async () => {
         try {
@@ -55,9 +54,7 @@ const ModifyComponent = ({ cBoardId }) => {
                 cboardContent: todo.cboardContent,
                 cboardViews: todo.cboardViews,
                 cboardDate: formattedDate, // 날짜 형식 맞추기
-                cboardAttachment: Array.isArray(todo.cboardAttachment) && todo.cboardAttachment.length > 0
-                    ? todo.cboardAttachment
-                    : null // 첨부파일 처리
+                cboardAttachment: todo.cboardAttachment, // 첨부파일 처리
             };
             console.log('camperObj:', camperObj);
 
@@ -86,8 +83,8 @@ const ModifyComponent = ({ cBoardId }) => {
     };
 
     const handleFileChange = (e) => {
-        const files = Array.from(e.target.files);
-        setTodo((prevTodo) => ({ ...prevTodo, cboardAttachment: files }));
+        const file = e.target.files[0]; // 첫 번째 파일만 가져옴
+        setTodo((prevTodo) => ({ ...prevTodo, cboardAttachment: file })); // 단일 파일 업데이트
     };
 
     return (
@@ -167,8 +164,7 @@ const ModifyComponent = ({ cBoardId }) => {
                         type="file"
                         className="form-control"
                         name="cboardAttachment"
-                        multiple
-                        onChange={handleFileChange}
+                        onChange={handleFileChange} // 단일 파일만 선택 가능
                     />
                 </div>
             </div>

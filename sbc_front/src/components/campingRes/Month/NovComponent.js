@@ -774,5 +774,4 @@ const NovComponent = () => {
         </div>
     );
 };
-
 export default NovComponent;

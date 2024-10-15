@@ -29,7 +29,7 @@ public class APILoginSuccessHandler implements AuthenticationSuccessHandler {
         // 토큰 부여
         Map<String, Object> claims = new HashMap<>();
         claims.put("member", memberDTO);  // memberDTO 객체 자체를 claims에 추가
-        String accessToken = JWTUtil.generateToken(claims, 10); // 20분 유효
+        String accessToken = JWTUtil.generateToken(claims, 60); // 20분 유효
         String refreshToken = JWTUtil.generateToken(claims, 60 * 24); // 24시간
         claims.put("access_token", accessToken);
         claims.put("refresh_token", refreshToken);

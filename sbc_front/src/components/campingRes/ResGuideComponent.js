@@ -31,13 +31,6 @@ const ResGuideComponent = () => {
                 </ul>
             </div>
             <div>
-                <h4>이용 요금 안내</h4>
-                <ul>
-                    <li>평일 : 40000원</li>
-                    <li>주말 : 80000원</li>
-                </ul>
-            </div>
-            <div>
                 <h4>예약 시 주의사항</h4>
                 <ul>
                     <li>
@@ -92,6 +85,13 @@ const ResGuideComponent = () => {
                         보다 안전하고 즐거운 캠핑을 위해 고객님의 협조를
                         부탁드립니다.
                     </li>
+                </ul>
+            </div>
+            <div>
+                <h4>이용 요금 안내</h4>
+                <ul>
+                    <li>평일 : 40000원</li>
+                    <li>주말 : 80000원</li>
                 </ul>
             </div>
             <div>

@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
-import {getOne, deleteOne, getMemberById} from "../../api/camperApi";  // API 함수 가져오기
+import { getOne, deleteOne, getMemberById, prefix } from "../../api/camperApi";  // API 함수 가져오기
 import useCustomMove from "../../hooks/useCustomMove";
 
 const initState = {
     member: {
         memberName: '',  // 작성자 이름
-        memberId:''
+        memberId: ''
     },
     cboardCategory: '',
     cboardTitle: '',
     cboardContent: '',
     cboardDate: '',
     cboardViews: 0,
-    cboardAttachment: [],  // 첨부파일 배열
+    cboardAttachment: '',  //
     cboardId: null,
 };
 
@@ -23,32 +23,32 @@ const ReadComponent = ({ cBoardId }) => {
 
     // 게시글 데이터 로딩
     useEffect(() => {
-    const fetchData = async () => {
-        try {
-            const data = await getOne(cBoardId);
-            if (data) {
-                setCamper(data);  // 게시글 데이터 상태 업데이트
+        const fetchData = async () => {
+            try {
+                const data = await getOne(cBoardId);
+                if (data) {
+                    setCamper(data);  // 게시글 데이터 상태 업데이트
 
-                // 작성자 정보를 가져오기 위해 memberId를 사용
-                if (data.memberId) {
-                    const memberData = await getMemberById(data.memberId);
-                    setCamper(prevCamper => ({
-                        ...prevCamper,
-                        member: memberData
-                    }));
+                    // 작성자 정보를 가져오기 위해 memberId를 사용
+                    if (data.memberId) {
+                        const memberData = await getMemberById(data.memberId);
+                        setCamper(prevCamper => ({
+                            ...prevCamper,
+                            member: memberData
+                        }));
+                    }
+                } else {
+                    console.log("데이터가 없습니다.");
                 }
-            } else {
-                console.log("데이터가 없습니다.");
+            } catch (error) {
+                console.error("API 호출 오류:", error);
+            } finally {
+                setLoading(false);
             }
-        } catch (error) {
-            console.error("API 호출 오류:", error);
-        } finally {
-            setLoading(false);
-        }
-    };
+        };
 
-    fetchData();
-}, [cBoardId]);
+        fetchData();
+    }, [cBoardId]);
 
     // 게시글 삭제 함수
     const handleDelete = async () => {
@@ -76,10 +76,10 @@ const ReadComponent = ({ cBoardId }) => {
 
     return (
         <div className="container mt-4">
-            <div className="border p-4 rounded" style={{maxWidth: "600px", margin: "auto"}}>
+            <div className="border p-4 rounded" style={{ maxWidth: "600px", margin: "auto" }}>
                 {/* 카테고리와 제목 */}
                 <h1>{camper.cboardCategory} - {camper.cboardTitle}</h1>
-                <hr/>
+                <hr />
 
                 {/* 작성일과 조회수 */}
                 <div className="row mb-2">
@@ -90,40 +90,39 @@ const ReadComponent = ({ cBoardId }) => {
                         <strong>조회수: </strong>{camper.cboardViews}
                     </div>
                 </div>
-                <hr/>
+                <hr />
 
                 {/* 작성자 */}
                 <div className="mb-2">
                     <strong>작성자: </strong>
                     {camper.member && camper.member.memberName ? camper.member.memberName : '작성자가 없습니다.'}
                 </div>
-                <hr/>
+                <hr />
 
-                {/* 첨부파일 */}
                 <div className="mb-2">
                     <strong>첨부파일: </strong>
-                    {Array.isArray(camper.cboardAttachment) && camper.cboardAttachment.length > 0 ? (
-                        camper.cboardAttachment.map((file, index) => (
-                            isImageFile(file) ? (
-                                // 이미지 파일인 경우 표시
-                                <img
-                                    key={index}
-                                    src={file}
-                                    alt={`첨부 이미지 ${index}`}
-                                    style={{maxWidth: '100%', height: 'auto', marginBottom: '10px'}}
-                                />
-                            ) : (
-                                // 일반 파일의 경우 다운로드 링크 제공
-                                <a key={index} href={file} target="_blank" rel="noopener noreferrer">
-                                    첨부파일 {index + 1} 보기
-                                </a>
-                            )
-                        ))
+                    {camper.cboardAttachment ? (
+                        isImageFile(camper.cboardAttachment) ? (
+                            // 이미지 파일인 경우 표시
+                            <img
+                                src={`${prefix}/view/${camper.cboardAttachment}`}
+                                alt="첨부 이미지"
+                                style={{ maxWidth: '100%', height: 'auto', marginBottom: '10px' }}
+                            />
+                        ) : (
+                            // 일반 파일의 경우 다운로드 링크 제공
+                            <a
+                                href={`/api/campers/files/${camper.cboardAttachment}`}
+                                target="_blank"
+                                rel="noopener noreferrer">
+                                첨부파일 보기
+                            </a>
+                        )
                     ) : (
                         <span>없음</span>
                     )}
                 </div>
-                <hr/>
+                <hr />
 
                 {/* 내용 */}
                 <div className="mb-2">

@@ -22,7 +22,7 @@ const noticeRouter=()=>{
 
         },
         { //공지사항  수정 페이지 라우팅
-            path: "modify/:nid",
+            path: "update/:nid",
             element: <Suspense fallback={Loading}><NoticeModify/></Suspense>
         },
         { //공지사항  작성 페이지 라우팅
