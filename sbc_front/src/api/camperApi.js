@@ -1,5 +1,6 @@
 import axios from "axios";
 import { getCookie } from "../util/cookieUtil";
+import jwtAxios from "../util/jwtUtil";
 //서버 주소
 export const API_SERVER_HOST = "http://localhost:8080";
 
@@ -75,13 +76,13 @@ export const getCommentList = async (cBoardId) => {
 
   return await res.data;
 };
-
+// 댓글 삭제
 export const deleteComment = async (commentId) => {
   const res = await axios.delete(`${prefix}/comments/${commentId}`);
 
   return await res.data;
 };
-
+// 댓글 수정
 export const updateComment = async () => {
   const response = await fetch(`/api/members/`);
   if (!response.ok) {
@@ -89,7 +90,7 @@ export const updateComment = async () => {
   }
   return await response.data();
 };
-
+//댓글 등록
 export const postCommentAdd = async (req) => {
   const memberInfo = JSON.parse(getCookie("memberCookie"));
   const { accessToken, refreshToken } = memberInfo;

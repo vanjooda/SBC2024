@@ -153,7 +153,6 @@ public class CamperController {
      *
      * @param
      */
-    @DeleteMapping("/comments/{commentId}")
     public Map<String, String> removeComment(
             @PathVariable("commentId") Long commentId
     ) {
