@@ -1,4 +1,5 @@
 import axios from "axios"
+import jwtAxios from "../../util/jwtUtil";
 
 // 서버 주소
 export const API_SERVER_HOST = 'http://localhost:8080'
@@ -8,7 +9,7 @@ const prefix = `${API_SERVER_HOST}/admin/qnas`
 // getList : 페이지 처리 및 전체 게시글 목록 가져오기
 export const getList = async (pageParam) => {
     const {page,size} = pageParam
-    const res = await axios.get(`${prefix}/list`, {params: {page:page, size:size}})
+    const res = await jwtAxios.get(`${prefix}/list`, {params: {page:page, size:size}})
 
     console.log(res.data)
 
@@ -28,7 +29,7 @@ export const searchBoard = async (type, keyword, pageParam) => {
     };
 
     // 요청 보내기
-    const res = await axios.get(`${prefix}/search`, { params });
+    const res = await jwtAxios.get(`${prefix}/search`, { params });
 
     console.log(res.data);
     return res.data;
@@ -36,7 +37,7 @@ export const searchBoard = async (type, keyword, pageParam) => {
 
 // getOne : 게시글 상세 페이지(read)
 export const getOne = async (qbID) => {
-    const res = await axios.get(`${prefix}/${qbID}`);
+    const res = await jwtAxios.get(`${prefix}/${qbID}`);
     console.log(res.data);
     return res.data
 }
@@ -44,7 +45,7 @@ export const getOne = async (qbID) => {
 // postAdd : 게시글 등록 (Create)
 export const postAdd = async (qna) => {
     try {
-        const res = await axios.post(`${prefix}/`, qna, {
+        const res = await jwtAxios.post(`${prefix}/`, qna, {
             headers: {
                 'Content-Type': 'multipart/form-data' // 파일 업로드를 위한 헤더 설정
             }
@@ -63,42 +64,41 @@ export const postAdd = async (qna) => {
 // putOne : 게시글 수정(Modify)
 export const putOne = async (qbID, qna) => {
     const header = {headers:{"Content-Type" : "multipart/form-data"}};
-    const res = await axios.put(`${prefix}/${qbID}`, qna, header)
+    const res = await jwtAxios.put(`${prefix}/${qbID}`, qna, header)
     return res.data;
 }
 
 // deleteOne : 게시글 삭제
 export const deleteOne = async (qbID) => {
-    const res = await axios.delete(`${prefix}/${qbID}`);
+    const res = await jwtAxios.delete(`${prefix}/${qbID}`);
     return res.data;
 }
 
 // postCommentAdd : 댓글 등록
 export const postCommentAdd = async (qbID, qcomment) => {
-    const res = await axios.post(`${prefix}/${qbID}/comments/`, qcomment);
+    const res = await jwtAxios.post(`${prefix}/${qbID}/comments/`, qcomment);
 
     console.log(res.data);
     return res.data;
 }
 // 댓글 수정
 export const updateComment = async (qcommentID, qcomment, qbID) => {
-    const res = await axios.put(`${prefix}/${qbID}/comments/${qcommentID}`, qcomment);
+    const res = await jwtAxios.put(`${prefix}/${qbID}/comments/${qcommentID}`, qcomment);
     return res.data;
 };
 
 // 댓글 삭제
 export const deleteComment = async (qcommentID, qbID) => {
-    const res = await axios.delete(`${prefix}/${qbID}/comments/${qcommentID}`)
+    const res = await jwtAxios.delete(`${prefix}/${qbID}/comments/${qcommentID}`)
     return res.data;
 }
 
 // getCommentList : 해당 게시글의 댓글 목록 가져오기
 export const getCommentList = async (qbID) => {
     try {
-        const res = await axios.get(`${prefix}/${qbID}/comments/list`);
+        const res = await jwtAxios.get(`${prefix}/${qbID}/comments/list`);
         const count = res.data ? Object.keys(res.data).length : 0; // 데이터가 있는 경우만 카운트
         console.log(res.data);
-        console.log(`댓글 갯수 : ${count}`);
         return res.data;
     } catch (error) {
         console.error('댓글 리스트 가져오기 중 오류 발생:', error);

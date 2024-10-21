@@ -268,4 +268,16 @@ public class QnaServiceImpl implements QnaService {
 
         }
     }
+
+    // 11. 댓글 정보 가져오기
+    @Override
+    public QnaCommentDTO getComment(Long qbcommID) {
+        Optional<QuestionBoardComment> qbcomm = qnaCommentRepository.findById(qbcommID);
+        QuestionBoardComment result = qbcomm.orElseThrow();
+
+        QnaCommentDTO dto = modelMapper.map(result, QnaCommentDTO.class);
+
+        return dto;
+    }
+
 }

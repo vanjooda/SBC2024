@@ -23,7 +23,10 @@
 #loginbox > input:focus{
     outline: none;
 }
-
+.btn-box{
+    text-align: center;
+    margin: 0 auto;
+}
 .loginbutton_default{
     margin: 5px;
     padding: 10px;
@@ -39,12 +42,17 @@
     cursor: pointer;
 }
 .loginbutton_kakao{
+    margin-left: 19px;
     padding: 10px;
     border: 1px solid gold;
     background: gold;
     color: black;
     border-radius: 10px;
     width: 300px;
+}
+.loginbutton_kakao a{
+    text-decoration: none;
+    color: black;
 }
 .loginbutton_kakao:hover{
     background: #f3c32a;

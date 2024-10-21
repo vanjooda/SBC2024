@@ -10,7 +10,6 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@Setter
 @Builder
 @ToString
 @Table(name="Camper_Board_Comment")
@@ -28,7 +27,7 @@ public class CamperBoardComment {   // 캠퍼 게시판 댓글
 
     @ManyToOne
     @JoinColumn(name="Cboard_ID", referencedColumnName = "Cboard_ID")
-    private CamperBoard cBoard;  // 캠퍼 게시판 글 번호
+    private CamperBoard cboardID;  // 캠퍼 게시판 글 번호
 
     @Column(name = "Cboard_Comment_content",nullable = false,length = 200)
     private String cCommentContent; // 댓글 내용
@@ -37,7 +36,4 @@ public class CamperBoardComment {   // 캠퍼 게시판 댓글
     @Temporal(TemporalType.TIMESTAMP)
     private Date cCommentDate;  // 댓글 작성일
 
-    public void changeContent(String content) {
-        this.cCommentContent = content;
-    }
 }

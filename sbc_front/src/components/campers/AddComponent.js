@@ -9,7 +9,7 @@ const AddComponent = () => {
     // 초기 상태 설정
     const initState = {
         member: {
-            memberId: loginState.member.memberId,
+            memberId: loginState.member.memberId
         },
         cBoardCategory: '',
         cBoardTitle: '',

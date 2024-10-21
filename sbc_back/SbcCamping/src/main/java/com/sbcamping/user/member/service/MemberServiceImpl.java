@@ -2,20 +2,25 @@ package com.sbcamping.user.member.service;
 
 import com.sbcamping.domain.Member;
 import com.sbcamping.domain.Reservation;
-import com.sbcamping.user.member.dto.MemberDTO;
 import com.sbcamping.user.member.repository.MemberRepository;
 import com.sbcamping.user.reservation.repository.ReservationRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.time.LocalDate;
-import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -29,6 +34,50 @@ public class MemberServiceImpl implements MemberService{
     private final ReservationRepository reservationRepository;
 
     private final PasswordEncoder passwordEncoder;
+
+    // 카카오 이메일 가져오는 메소드
+    @Override
+    public Map<String, String> getKakaoMember(String accessToken) {
+        String email = getEmailFromKakaoAceessToken(accessToken);
+        log.info("----------kakao email : " + email);
+        String result = "none";
+        Member member = memberRepository.findByMemberEmail(email);
+        Map<String, String> map = new LinkedHashMap<>();
+        if (member == null) {
+            result = "fail";
+            map.put("result", result);
+            map.put("kakaoEmail", email);
+        } else{
+            result = "success";
+            String memberEmail = member.getMemberEmail();
+            map.put("member", memberEmail);
+            map.put("memberEmail", memberEmail);
+        }
+        return map;
+    }
+
+    // 카카오 로그인 액세스 토큰
+    private String getEmailFromKakaoAceessToken(String accessToken) {
+        String kakaoGetUserURL = "https://kapi.kakao.com/v2/user/me";
+        if(accessToken == null){
+            throw new RuntimeException("KAKAO ACCESS TOKEN IS NULL");
+        }
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + accessToken);
+        headers.add("Content-Type", "application/x-www-form-urlencoded");
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        UriComponents uriBuilder = UriComponentsBuilder.fromHttpUrl(kakaoGetUserURL).build();
+
+        ResponseEntity<LinkedHashMap> response = restTemplate.exchange(uriBuilder.toString(), HttpMethod.GET, entity, LinkedHashMap.class);
+        log.info("--------getEmailFromKakaoAccessToken() response : " + response);
+
+        LinkedHashMap<String, LinkedHashMap> bodyMap = response.getBody();
+        LinkedHashMap<String, String> kakaoAccount = bodyMap.get("kakao_account");
+        log.info("kakao Account : " + kakaoAccount);
+        return kakaoAccount.get("email");
+    }
 
     @Override
     public String withdraw(Long memberId, String memberPw) {
@@ -149,6 +198,27 @@ public class MemberServiceImpl implements MemberService{
             email = member.getMemberEmail();
         }
         return email;
+    }
+
+    // 카카오 회원 등록
+    @Override
+    public void kakaoAddMember(Member member) {
+        String tempPw = makeTempPassword();
+        member.changePw(passwordEncoder.encode(tempPw));
+        Member mem = memberRepository.save(member);
+        if(mem != null) {
+            Long memID = mem.getMemberID();
+            log.info("memID : " + memID);
+        }
+    }
+
+    // 카카오 임시 회원번호(카카오는 비밀번호 알 수 없음)
+    private String makeTempPassword(){
+        StringBuffer buffer = new StringBuffer();
+        for(int i = 0; i < 10; i++){
+            buffer.append((char)((int)(Math.random()*55)+65));
+        }
+        return buffer.toString();
     }
 
     // 회원 등록

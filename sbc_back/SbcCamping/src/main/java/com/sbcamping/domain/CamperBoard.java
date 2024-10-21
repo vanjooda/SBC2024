@@ -72,7 +72,4 @@ public class CamperBoard {
         this.cBoardAttachment = attachment;
     }
 
-    public void changeViews(long views) {
-        this.cBoardViews = views;
-    }
 }

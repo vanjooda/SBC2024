@@ -1,4 +1,5 @@
 import axios from "axios"
+import jwtAxios from "../../util/jwtUtil";
 
 // 서버 주소
 export const API_SERVER_HOST = 'http://localhost:8080'
@@ -8,7 +9,7 @@ const prefix = `${API_SERVER_HOST}/admin/stats`
 // 매출 현황 : 금액 가져오기, 예약 건수
 export const fetchSalesStats = async (params) => {
     try {
-        const response = await axios.get(`${prefix}/reservation-sales/sales`, { params });
+        const response = await jwtAxios.get(`${prefix}/reservation-sales/sales`, { params });
         return response.data;
     } catch (error) {
         console.error('API request error:', error.response?.data || error.message);
@@ -20,7 +21,7 @@ export const fetchSalesStats = async (params) => {
 export const fetchCancelStats = async (params) => {
     console.log('Fetching cancel stats with params:', params);
     try {
-        const response = await axios.get(`${prefix}/reservation-sales/cancel`, { params });
+        const response = await jwtAxios.get(`${prefix}/reservation-sales/cancel`, { params });
         console.log('API response:', response.data);
         return response.data;
     } catch (error) {
@@ -32,7 +33,7 @@ export const fetchCancelStats = async (params) => {
 // 고객 리뷰 현황 : 태그별 리뷰 건수
 export const fetchReviewStats = async (params) => {
     try {
-        const response = await axios.get(`${prefix}/customer/reviews`, { params });
+        const response = await jwtAxios.get(`${prefix}/customer/reviews`, { params });
         return response.data;
     } catch (error) {
         console.error('API request error:', error.response?.data || error.message);
@@ -52,7 +53,7 @@ export const fetchCustomerStats = async (startDate, endDate, dateType, siteId = 
         
         console.log('Sending request with params:', params.toString()); // 디버깅용 로그
 
-        const response = await axios.get(`${prefix}/customer/all`, { params });
+        const response = await jwtAxios.get(`${prefix}/customer/all`, { params });
         return response.data;
     } catch (error) {
         console.error('Error fetching customer stats:', error);

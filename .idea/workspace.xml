@@ -4,25 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fe850821-29f6-41de-9966-cd94c42d951b" name="변경" comment="241018 17:14">
+    <list default="true" id="fe850821-29f6-41de-9966-cd94c42d951b" name="변경" comment="241021">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sbc_back/SbcCamping/src/main/java/com/sbcamping/domain/CamperBoard.java" beforeDir="false" afterPath="$PROJECT_DIR$/sbc_back/SbcCamping/src/main/java/com/sbcamping/domain/CamperBoard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sbc_back/SbcCamping/src/main/java/com/sbcamping/domain/CamperBoardComment.java" beforeDir="false" afterPath="$PROJECT_DIR$/sbc_back/SbcCamping/src/main/java/com/sbcamping/domain/CamperBoardComment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sbc_back/SbcCamping/src/main/java/com/sbcamping/user/camper/controller/CamperController.java" beforeDir="false" afterPath="$PROJECT_DIR$/sbc_back/SbcCamping/src/main/java/com/sbcamping/user/camper/controller/CamperController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sbc_back/SbcCamping/src/main/java/com/sbcamping/user/camper/controller/formatter/LocalDateFormatter.java" beforeDir="false" afterPath="$PROJECT_DIR$/sbc_back/SbcCamping/src/main/java/com/sbcamping/user/camper/controller/formatter/LocalDateFormatter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sbc_back/SbcCamping/src/main/java/com/sbcamping/user/camper/dto/CamperBoardDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/sbc_back/SbcCamping/src/main/java/com/sbcamping/user/camper/dto/CamperBoardDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sbc_back/SbcCamping/src/main/java/com/sbcamping/user/camper/dto/PageRequestDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/sbc_back/SbcCamping/src/main/java/com/sbcamping/user/camper/dto/PageRequestDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sbc_back/SbcCamping/src/main/java/com/sbcamping/user/camper/dto/PageResponseDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/sbc_back/SbcCamping/src/main/java/com/sbcamping/user/camper/dto/PageResponseDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sbc_back/SbcCamping/src/main/java/com/sbcamping/user/camper/dto/SearchDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/sbc_back/SbcCamping/src/main/java/com/sbcamping/user/camper/dto/SearchDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sbc_back/SbcCamping/src/main/java/com/sbcamping/user/camper/repository/CamperRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/sbc_back/SbcCamping/src/main/java/com/sbcamping/user/camper/repository/CamperRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sbc_back/SbcCamping/src/main/java/com/sbcamping/user/camper/service/CamperService.java" beforeDir="false" afterPath="$PROJECT_DIR$/sbc_back/SbcCamping/src/main/java/com/sbcamping/user/camper/service/CamperService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sbc_back/SbcCamping/src/main/java/com/sbcamping/user/camper/service/CamperServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/sbc_back/SbcCamping/src/main/java/com/sbcamping/user/camper/service/CamperServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sbc_front/src/api/camperApi.js" beforeDir="false" afterPath="$PROJECT_DIR$/sbc_front/src/api/camperApi.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sbc_front/src/components/campers/AddComponent.js" beforeDir="false" afterPath="$PROJECT_DIR$/sbc_front/src/components/campers/AddComponent.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sbc_front/src/components/campers/ListComponent.js" beforeDir="false" afterPath="$PROJECT_DIR$/sbc_front/src/components/campers/ListComponent.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sbc_front/src/components/campers/ModifyComponent.js" beforeDir="false" afterPath="$PROJECT_DIR$/sbc_front/src/components/campers/ModifyComponent.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sbc_front/src/components/campers/ReadComponent.js" beforeDir="false" afterPath="$PROJECT_DIR$/sbc_front/src/components/campers/ReadComponent.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sbc_front/src/pages/campers/CamperIndexPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/sbc_front/src/pages/campers/CamperIndexPage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sbc_front/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/sbc_front/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sbc_front/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/sbc_front/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sbc_front/src/css/mainPage.css" beforeDir="false" afterPath="$PROJECT_DIR$/sbc_front/src/css/mainPage.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sbc_front/src/pages/MainPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/sbc_front/src/pages/MainPage.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,8 +30,8 @@
 }</component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/seongpyo0606/SBC2024.git&quot;,
-    &quot;accountId&quot;: &quot;d7522a01-2fec-495c-932b-8006d823e03f&quot;
+    &quot;url&quot;: &quot;https://github.com/vanjooda/SBC2024.git&quot;,
+    &quot;accountId&quot;: &quot;c4c2958b-496f-465c-8122-19b57adac5f1&quot;
   }
 }</component>
   <component name="ProjectColorInfo">{
@@ -56,22 +43,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/workspace/SBC2024",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/KOSMO/Desktop/241018 통합/SBC2024/sbc_front&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.DirectoryMappings&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="ReactDesignerToolWindowState">
     <option name="myId2Visible">
       <map>
@@ -86,110 +72,11 @@
       <recent name="C:\Users\KOSMO\Desktop\241014 프로젝트 병합\SBC2024_lee\sbc_front\src\css" />
     </key>
   </component>
-  <component name="RunManager">
-    <configuration default="true" type="JetRunConfigurationType">
-      <module name="SBC2024" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
-      <module name="SBC2024" />
-      <option name="filePath" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
-      <module name="SBC2024" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration default="true" type="Python.FlaskServer">
-      <module name="SBC2024" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="launchJavascriptDebuger" value="false" />
-      <method v="2" />
-    </configuration>
-    <configuration default="true" type="Tox" factoryName="Tox">
-      <module name="SBC2024" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <method v="2" />
-    </configuration>
-    <configuration default="true" type="docs" factoryName="Docutils task">
-      <module name="SBC2024" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="docutils_input_file" value="" />
-      <option name="docutils_output_file" value="" />
-      <option name="docutils_params" value="" />
-      <option name="docutils_task" value="" />
-      <option name="docutils_open_in_browser" value="false" />
-      <method v="2" />
-    </configuration>
-    <configuration default="true" type="docs" factoryName="Sphinx task">
-      <module name="SBC2024" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="docutils_input_file" value="" />
-      <option name="docutils_output_file" value="" />
-      <option name="docutils_params" value="" />
-      <option name="docutils_task" value="" />
-      <option name="docutils_open_in_browser" value="false" />
-      <method v="2" />
-    </configuration>
-  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.18034.62" />
-        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-IU-241.18034.62" />
+        <option value="bundled-jdk-9823dce3aa75-b114ca120d71-intellij.indexing.shared.core-IU-242.21829.142" />
+        <option value="bundled-js-predefined-d6986cc7102b-7c0b70fcd90d-JavaScript-IU-242.21829.142" />
       </set>
     </attachedChunks>
   </component>
@@ -211,10 +98,7 @@
       <workItem from="1729046665010" duration="5000" />
       <workItem from="1729061817571" duration="263000" />
       <workItem from="1729239228957" duration="154000" />
-      <workItem from="1729468560017" duration="179000" />
-      <workItem from="1729468872727" duration="106000" />
-      <workItem from="1729468985693" duration="241000" />
-      <workItem from="1729470070629" duration="18000" />
+      <workItem from="1729470656818" duration="25000" />
     </task>
     <task id="LOCAL-00001" summary="241014 18:32">
       <option name="closed" value="true" />
@@ -264,7 +148,15 @@
       <option name="project" value="LOCAL" />
       <updated>1729239247796</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="241021">
+      <option name="closed" value="true" />
+      <created>1729474358750</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1729474358750</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -290,7 +182,8 @@
     <MESSAGE value="241015 20:05" />
     <MESSAGE value="241016 15:57" />
     <MESSAGE value="241018 17:14" />
-    <option name="LAST_COMMIT_MESSAGE" value="241018 17:14" />
+    <MESSAGE value="241021" />
+    <option name="LAST_COMMIT_MESSAGE" value="241021" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

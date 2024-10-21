@@ -4,6 +4,7 @@ import {deleteOne, getOne} from "../../api/qnaApi";
 import defaultImage from '../../../images/default.jpg';
 import ConfirmModal from "../util/ConfirmModal";
 import CommentComponent from "./CommentComponent";
+import {prefix} from "../../../api/camperApi";
 
 const initState = {
     qboardID : 0,
@@ -19,13 +20,15 @@ function ReadComponent() {
    const {qbID} = useParams()
    const navigate = useNavigate()
    const [qboard, setQboard] = useState(initState);
+   const [imageLoadError, setImageLoadError] = useState(false);
 
     useEffect(() => {
         getOne(qbID).then(data => {
-            console.log(data);
+            console.log("사진", data.qboardAttachment);
             setQboard(data)
-        })
+        });
     }, [qbID]);
+
 
     // 수정하기 버튼 클릭 시 호출되는 함수
     const handleModifyClick = (qbID) => {
@@ -44,7 +47,6 @@ function ReadComponent() {
     const confirmDelete = async () => {
         try {
             await deleteOne(currentID);
-            alert("삭제 완료");
             console.log(`${currentID}번 삭제되었습니다.`);
             navigate('/admin/qnas/list');
         } catch (error) {
@@ -76,18 +78,22 @@ function ReadComponent() {
                 <h3 className="text-lg font-semibold mb-2">작성자 {qboard.member.memberName}</h3>
             </div>
 
-            <div className="mb-8">
-                <div className="text-gray-700 bg-gray-100 p-4 rounded-lg"><img
-                    src={`http://localhost:8080/admin/qnas/view/${qboard.qboardAttachment}`}
-                    alt="게시물 첨부 이미지"
-                    className="rounded-lg"
-                    onError={(e) => {
-                        e.target.onerror = null; // 무한 루프 방지
-                        e.target.src = defaultImage; // 기본 이미지 경로
-                    }}
-                />
+                <div className="mb-8">
+            {qboard.qboardAttachment && qboard.qboardAttachment.trim() !== "" && !imageLoadError ? (
+                    <div className="text-gray-700 bg-gray-100 p-4 rounded-lg">
+                        <img
+                            src={`${prefix}/view/${qboard.qboardAttachment}`}
+                            alt="게시물 첨부 이미지"
+                            className="rounded-lg"
+                            onError={(e) => {
+                                e.target.onerror = null; // 무한 루프 방지
+                                setImageLoadError(true); // 새로운 상태 변수를 사용하여 이미지 로드 실패를 추적
+                            }}
+                        />
+                    </div>
+            ) : (
+                 <p className="text-gray-500">첨부된 이미지가 없습니다.</p>)}
                 </div>
-            </div>
 
             <div className="mb-8">
                 <p className="text-gray-700 bg-gray-100 p-4 rounded-lg">{qboard.qboardContent}</p>
@@ -99,9 +105,6 @@ function ReadComponent() {
 
                 <CommentComponent/>
 
-                {/*<ListCommentComponent/>*/}
-                {/*<hr/>*/}
-                {/*<AddCommentComponent qbID={qboard.qboardID}/>*/}
             </div>
 
             {/* 목록으로 돌아가기, 수정하기, 삭제하기 버튼 */}

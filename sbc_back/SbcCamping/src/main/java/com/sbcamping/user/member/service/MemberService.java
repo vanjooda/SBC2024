@@ -5,6 +5,7 @@ import com.sbcamping.domain.Reservation;
 import com.sbcamping.user.member.dto.MemberDTO;
 
 import java.util.List;
+import java.util.Map;
 
 public interface MemberService {
     public void addMember(Member member);
@@ -20,4 +21,6 @@ public interface MemberService {
     public Reservation getResDetail(Long resId);
     public void cancelRes(Long resId, String reason);
     public String withdraw(Long memberId, String memberPw);
+    public Map<String, String> getKakaoMember(String accessToken);
+    public void kakaoAddMember(Member member);
 }

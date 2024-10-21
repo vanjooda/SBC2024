@@ -3,16 +3,26 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import '../css/common.css';
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
+import {logout} from "../../slice/loginSlice";
+import {useDispatch, useSelector} from "react-redux";
 //{children}속성을 활용하여 컴포넌트 내부에 다른 컴포넌트를 적용시킬 수 있음
 const BasicLayout = ({ children }) => {
 
-  const logout = () => {
+  const logoutMsg = () => {
     const now = new Date();
     const currentTime = now.toLocaleString();
     alert(currentTime + " 관리자 로그아웃");
+  }
 
-    window.location.href = "http://localhost:3000/"
+  const navigate = useNavigate();
+  const loginState = useSelector(state => state.loginSlice);
+  const dispatch = useDispatch();
+
+  const handleClickLogout = () => {
+    logoutMsg();
+    dispatch(logout());
+    navigate("/");
   }
 
   return (
@@ -24,7 +34,7 @@ const BasicLayout = ({ children }) => {
             <Navbar.Brand href="/admin" id="logo">LOGO</Navbar.Brand>
             <div id="">
               <Nav className="justify-content-end">
-                <Nav.Link onClick={logout}>로그아웃</Nav.Link>
+                <Nav.Link onClick={handleClickLogout}>로그아웃</Nav.Link>
               </Nav>
               <Nav className="justify-content-end">
                 <NavDropdown href="/admin/site" title="구역 관리">

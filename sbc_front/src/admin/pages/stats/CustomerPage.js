@@ -18,6 +18,7 @@ const CustomerPage = () => {
     return (
         <>
             <h1>고객 통계</h1>
+            <hr/>
             <nav>
                 <Tabs
                     defaultActiveKey="customer"

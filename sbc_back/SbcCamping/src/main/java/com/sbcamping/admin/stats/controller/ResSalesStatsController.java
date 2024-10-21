@@ -7,6 +7,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,6 +19,7 @@ import java.time.YearMonth;
 @RestController
 @RequiredArgsConstructor
 @Log4j2
+@PreAuthorize("hasRole('ROLE_ADMIN')")
 @RequestMapping("/admin/stats/reservation-sales")
 public class ResSalesStatsController { // 1. 예약 매출 통계 : 기간별, 사이트별 조회
 

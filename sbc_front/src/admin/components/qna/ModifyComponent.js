@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
 import { getOne, putOne } from "../../api/qnaApi";
 import defaultImage from "../../../images/default.jpg";
+import {prefix} from "../../../api/camperApi";
 
 const initState = {
     qBoardTitle: '',
@@ -28,6 +29,7 @@ function ModifyComponent(props) {
                 qBoardAttachment: data.qboardAttachment || '',
                 file: null // 파일은 처음에는 null로 설정
             });
+
         };
         fetchData();
     }, [qbID]);
@@ -50,11 +52,9 @@ function ModifyComponent(props) {
     const deleteOldImage = () => {
         setQna(prev => ({
             ...prev,
-            qBoardAttachment: null, // 첨부 파일 초기화
-            file: null // 파일도 초기화 (기존 이미지 삭제)
+            qBoardAttachment: null // 첨부 파일 초기화
         }));
         setShowDeleteButton(false); // 버튼 숨기기
-        console.log(qna);
     };
 
     const handleClickModify = async (e) => {
@@ -64,12 +64,13 @@ function ModifyComponent(props) {
         formData.append("qBoardTitle", qna.qBoardTitle);
         formData.append("qBoardContent", qna.qBoardContent);
 
+        console.log("사진",qna.qBoardAttachment);
         // 파일 처리
         if (qna.file) {
             formData.append("file", qna.file); // 새로운 파일이 있을 경우 추가
         } else {
             // 현재 첨부 파일 상태 처리
-            if (qna.qBoardAttachment === null) {
+            if (qna.qBoardAttachment === null || qna.qBoardAttachment === '') {
                 formData.append("qBoardAttachment", null); // 기존 파일 삭제 시 null로 설정
             } else {
                 formData.append("qBoardAttachment", qna.qBoardAttachment); // 기존 첨부 파일 유지
@@ -127,7 +128,7 @@ function ModifyComponent(props) {
                         <div>
                             <button type="button" onClick={deleteOldImage}>X</button>
                             <img
-                                src={qna.qBoardAttachment ? `http://localhost:8080/admin/qnas/view/${qna.qBoardAttachment}` : defaultImage}
+                                src={`${prefix}/view/${qna.qBoardAttachment}`}
                                 alt="게시물 첨부 이미지"
                                 className="rounded-lg"
                                 onError={(e) => {

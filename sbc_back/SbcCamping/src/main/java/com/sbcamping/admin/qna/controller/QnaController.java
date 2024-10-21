@@ -8,12 +8,13 @@ import com.sbcamping.admin.qna.dto.QnaDTO;
 import com.sbcamping.admin.qna.dto.QnaReqDTO;
 import com.sbcamping.admin.qna.service.QnaService;
 import com.sbcamping.common.util.CustomFileUtil;
-import com.sbcamping.domain.QuestionBoardComment;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,6 +25,7 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @Log4j2
+@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
 @RequestMapping("/admin/qnas")
 public class QnaController {
 
@@ -33,6 +35,7 @@ public class QnaController {
     private final CustomFileUtil fileUtil;
 
     // 1. 목록(list)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/list")
     public PageResponseDTO<QnaDTO> list(PageRequestDTO pageRequestDTO) {
         log.info("list.............." + pageRequestDTO);
@@ -60,36 +63,31 @@ public class QnaController {
     // 4. 수정 (Update)
     @PutMapping("/{qbID}")
     public Map<String, String> modify(@PathVariable("qbID") Long qbID, QnaReqDTO qnaDTO) {
-        qnaDTO.setQBoardID(qbID);
         QnaDTO oldQnaDTO = qnaService.get(qbID);
+        if (oldQnaDTO == null) {
+            throw new EntityNotFoundException("게시글을 찾을 수 없습니다.");
+        }
+
+        log.info("게시글 수정 전: " + oldQnaDTO);
+        qnaDTO.setQBoardID(qbID);
 
         if (qnaDTO.getFile() != null) {
-            // 새로 업로드 할 파일
             MultipartFile newFile = qnaDTO.getFile();
-
-            // 새로 업로드되어서 만들어진 파일 이름
             String newUploadedFileName = fileUtil.saveFile(newFile);
             qnaDTO.setQBoardAttachment(newUploadedFileName);
 
-            // 기존 파일
             String oldUploadedFileName = oldQnaDTO.getQBoardAttachment();
-
-            // 실제 파일 삭제
             if (oldUploadedFileName != null) {
-                fileUtil.deleteFile(oldUploadedFileName);
-                log.info("삭제완료");
-            }
-        } else {
-            if (qnaDTO.getQBoardAttachment() != null) {
-                qnaDTO.setQBoardAttachment(oldQnaDTO.getQBoardAttachment());
-            } else {
-                qnaDTO.setQBoardAttachment(null);
+                try {
+                    fileUtil.deleteFile(oldUploadedFileName);
+                    log.info("삭제완료: " + oldUploadedFileName);
+                } catch (Exception e) {
+                    log.error("파일 삭제 중 오류 발생: " + oldUploadedFileName, e);
+                }
             }
         }
 
-        // 수정
         qnaService.modify(qnaDTO);
-
         return Map.of("RESULT", "SUCCESS");
     }
 
@@ -152,19 +150,20 @@ public class QnaController {
     }
 
     // 4. 댓글 삭제
-   @DeleteMapping("/{qbID}/comments/{qcommentID}")
-   @Transactional
-   public Map<String, String> removeComment(@PathVariable("qcommentID") Long qbcommentID,  @PathVariable("qbID") Long qbID) {
+    @DeleteMapping("/{qbID}/comments/{qcommentID}")
+    @Transactional
+    public Map<String, String> removeComment(@PathVariable("qcommentID") Long qcommentID,  @PathVariable("qbID") Long qbID) {
 
-       qnaService.removeComment(qbcommentID, qbID);
+        qnaService.removeComment(qcommentID, qbID);
 
-       return Map.of("RESULT", "SUCCESS");
-   }
+        return Map.of("RESULT", "SUCCESS");
+    }
 
-   // 상품 보기
+    // 이미지 보기
     @GetMapping("/view/{fileName}")
-    public ResponseEntity<Resource> viewFileGET(@PathVariable("fileName") String fileName) {
+    public ResponseEntity<Resource> viewFileGET(@PathVariable String fileName) {
         return fileUtil.getFile(fileName);
     }
+
 
 }

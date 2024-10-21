@@ -1,14 +1,21 @@
 import React, { useState } from 'react';
 import { postAdd } from '../../api/qnaApi';
 import {useNavigate} from "react-router-dom";
+import {useSelector} from "react-redux";
+
+function QnaForm() {
+    const loginState = useSelector((state) => state.loginSlice)
 
 const initState = {
     qBoardTitle: '',
     qBoardContent: '',
+    member: {
+        memberId: loginState.member.memberId,
+        memberRole: loginState.member.memberRole,
+    },
     file: null
 };
 
-function QnaForm() {
     const [qna, setQna] = useState({ ...initState });
     const navigate = useNavigate();
 
@@ -33,8 +40,12 @@ function QnaForm() {
         const formData = new FormData();
         formData.append("qBoardTitle", qna.qBoardTitle);
         formData.append("qBoardContent", qna.qBoardContent);
-        formData.append("file", qna.file);
-        formData.append("memberID", 1);
+        formData.append("memberID", qna.member.memberId);
+
+        // 파일이 선택된 경우에만 추가
+        if (qna.file) {
+            formData.append("file", qna.file);
+        }
 
         try {
             await postAdd(formData);
@@ -79,7 +90,6 @@ function QnaForm() {
                     type="file"
                     onChange={handleFileChange}
                     className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    required
                 />
             </div>
             <div className="text-right space-x-2">

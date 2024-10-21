@@ -27,6 +27,7 @@ const Campingindex = lazy(() => import("../pages/campinginfo/CampingIndexPage"))
 const ResIndex = lazy(() => import("../pages/reservation/ResIndexPage"))
 const NoticeIndex = lazy(() => import("../pages/community/NoticeIndexPage"))
 const Login = lazy(() => import("../pages/login/LoginPage"))
+const KakaoRedirect = lazy(() => import("../pages/login/KakaoRedirectPage"))
 const Join = lazy(() => import("../pages/login/JoinIndexPage"))
 const FindPw = lazy(() => import("../pages/login/FindPwPage"))
 const FindPwMod = lazy(() => import("../pages/login/FindPwModifyPage"))
@@ -72,6 +73,10 @@ const root = createBrowserRouter([
     {
         path: "logout",
         element: <Navigate replace to="/"/>
+    },
+    {
+        path:"login/kakao",
+        element:<Suspense fallback={Loading}><KakaoRedirect/></Suspense>
     },
     {
         path: "findpw",

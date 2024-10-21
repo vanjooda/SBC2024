@@ -57,21 +57,34 @@ public class CustomFileUtil {  // 파일 데이터 입출력 담당 util
 
     // 업로드 파일 보여주기
     public ResponseEntity<Resource> getFile(String fileName) {
-        Resource resource = new FileSystemResource(uploadPath + File.separator + fileName);
+        // fileName이 null인 경우 처리
+        if (fileName == null || fileName.trim().isEmpty()) {
+            log.warn("파일 이름이 null이거나 비어 있습니다.");
+            return ResponseEntity.badRequest().body(null);
+        }
 
-        if (!resource.exists()) {
-            resource = new FileSystemResource(uploadPath + File.separator + "default.jpg");
+        Resource resource = new FileSystemResource(uploadPath + File.separator + fileName);
+        log.info("요청된 파일 리소스: {}", resource);
+
+        if (!resource.exists() || !resource.isReadable()) {
+        log.warn("파일을 찾을 수 없거나 읽을 수 없습니다: {}", fileName);
+            return ResponseEntity.notFound().build();
         }
 
         HttpHeaders headers = new HttpHeaders();
 
         try {
-            headers.add("Content-Type", Files.probeContentType(resource.getFile().toPath()));
-        } catch (Exception e) {
+            // Content-Type 설정
+            String contentType = Files.probeContentType(resource.getFile().toPath());
+            headers.add("Content-Type", contentType != null ? contentType : "application/octet-stream");
+        } catch (IOException e) {
+            log.error("파일 타입 확인 중 오류 발생: {}", fileName, e);
             return ResponseEntity.internalServerError().build();
         }
+
         return ResponseEntity.ok().headers(headers).body(resource);
     }
+
 
     // 서버 내부에서 파일 삭제
     public void deleteFile(String fileName) {

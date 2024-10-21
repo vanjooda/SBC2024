@@ -6,6 +6,7 @@ import BoardSearchComponent from "../util/BoardSearchComponent";
 import Table from "react-bootstrap/Table";
 import { Button } from 'react-bootstrap';
 import {useNavigate} from "react-router-dom";
+import fileImage from "../../../images/filehere.png";
 
 const initState = {
     dtoList: [],
@@ -22,79 +23,68 @@ const initState = {
 
 function ListComponent(props) {
     const { page, size } = useCustomMove();
+    const [currentPage, setCurrentPage] = useState(page); // 현재 페이지 상태
     const [serverData, setServerData] = useState(initState);
-    const [commentCounts, setCommentCounts] = useState({}); // 각 게시글의 댓글 개수 상태
+    const [commentCounts, setCommentCounts] = useState({});
     const [searchParams, setSearchParams] = useState({ type: 'name', keyword: '' });
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                // 게시물 리스트 가져오기
                 const data = searchParams.keyword
-                    ? await searchBoard(searchParams.type, searchParams.keyword, { page, size })
-                    : await getList({ page, size });
+                    ? await searchBoard(searchParams.type, searchParams.keyword, { page: currentPage, size })
+                    : await getList({ page: currentPage, size });
 
-                console.log(data);
                 setServerData(data);
 
-                // 댓글 갯수 가져오기
                 const commentCounts = await Promise.all(
                     data.dtoList.map(async (qb) => {
-                        const commentsData = await getCommentList(qb.qboardID); // qbID를 사용
-                        console.log(`게시글 ID: ${qb.qboardID}의 댓글 수: ${commentsData.length}`);
-                        return { qbID: qb.qboardID, count: commentsData.length || 0 }; // 댓글이 없으면 0으로 처리
+                        const commentsData = await getCommentList(qb.qboardID);
+                        return { qbID: qb.qboardID, count: commentsData.length || 0 };
                     })
                 );
 
-                // 댓글 개수 상태 업데이트
                 const countsMap = commentCounts.reduce((acc, { qbID, count }) => {
                     acc[qbID] = count;
                     return acc;
                 }, {});
-                setCommentCounts(countsMap); // 상태에 저장
-
-                console.log(`댓글 갯수:`, countsMap);
-
+                setCommentCounts(countsMap);
             } catch (error) {
                 console.error('API 호출 중 오류 발생:', error);
             }
         };
         fetchData();
-    }, [page, size, searchParams]);
+    }, [currentPage, size, searchParams]); // currentPage를 의존성으로 추가
 
-    // 페이지네이션
-    const totalPages = serverData.totalPage; // 총 페이지 수
+    const totalPages = serverData.totalPage;
 
     const handlePageChange = (newPage) => {
-        // 페이지 변경 시, API 호출 등 필요한 작업 수행
+        setCurrentPage(newPage); // 현재 페이지를 업데이트
     };
 
     const handleSearch = (type, keyword) => {
-        setSearchParams({ type, keyword }); // 검색 파라미터 설정
+        setSearchParams({ type, keyword });
     };
 
-    const navigate = useNavigate();
-
     const handleAddClick = () => {
-        navigate('/admin/qnas/add'); // 공지 등록 페이지 경로로 이동
+        navigate('/admin/qnas/add');
     };
 
     const handleReadClick = (qbID) => {
-        navigate(`/admin/qnas/read/${qbID}`)
-    }
+        navigate(`/admin/qnas/read/${qbID}`);
+    };
 
-    // 날짜 포맷팅
     const formatDate = (date) => {
         const yyyy = date.getFullYear();
-        const MM = String(date.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1
+        const MM = String(date.getMonth() + 1).padStart(2, '0');
         const dd = String(date.getDate()).padStart(2, '0');
-
         return `${yyyy}${MM}${dd}`;
     };
 
     return (
         <div>
-            <Table bordered hover responsive className="text-sm">
+            <Table bordered hover responsive className="text-sm-center">
                 <thead>
                 <tr>
                     <th>번호</th>
@@ -106,7 +96,7 @@ function ListComponent(props) {
                 </tr>
                 </thead>
                 <tbody>
-                {serverData.dtoList.map(qb =>
+                {serverData.dtoList.map(qb => (
                     <tr key={qb.qboardID}>
                         {qb.member.memberRole === "ROLE_ADMIN" ? (
                             <td>
@@ -122,23 +112,46 @@ function ListComponent(props) {
                         ) : (
                             <td>{qb.qboardID}</td>
                         )}
-                        <td onClick={()=> handleReadClick(qb.qboardID)}>{qb.qboardTitle} <span style={{fontWeight: 'bold', color:'red'}}>{commentCounts[qb.qboardID] >0 ? `[${commentCounts[qb.qboardID]}]`: ''}</span></td>
+                        <td onClick={() => handleReadClick(qb.qboardID)}>
+                            {qb.qboardTitle}
+                            {qb.qboardAttachment && (
+                                <img
+                                    src={fileImage}
+                                    alt="첨부 이미지"
+                                    style={{
+                                        width: '1em', // 글자 크기에 맞춰 조정
+                                        height: '1em', // 글자 크기에 맞춰 조정
+                                        verticalAlign: 'middle', // 수직 정렬
+                                        marginLeft: '4px' // 제목과 이미지 사이 간격 조정
+                                    }}
+                                />
+                            )}
+                            <span style={{
+                                fontWeight: 'bold',
+                                color: 'red'
+                            }}>
+        {commentCounts[qb.qboardID] > 0 ? `[${commentCounts[qb.qboardID]}]` : ''}
+    </span>
+                        </td>
                         <td>{qb.member.memberName}</td>
                         <td>{formatDate(new Date(qb.qboardDate))}</td>
                         <td>{qb.qboardViews}</td>
-                        <td>{qb.qboardAsked.trim().toUpperCase() === "Y" ? "미답변" : "답변완료"}</td>
+                        <td>
+                            {qb.member.memberRole === "ROLE_ADMIN" ? '' :
+                                qb.qboardAsked.trim().toUpperCase() === "Y" ? "답변 완료" : "미답변"}
+                        </td>
                     </tr>
-                )}
+                ))}
                 </tbody>
             </Table>
             <Button onClick={handleAddClick}>글쓰기</Button>
 
             <BootstrapPagination
-                currentPage={page}
+                currentPage={currentPage} // 수정된 현재 페이지 상태
                 totalPages={totalPages}
-                onPageChange={handlePageChange}
+                onPageChange={handlePageChange} // 페이지 변경 함수
             />
-            <BoardSearchComponent onSearch={handleSearch} />
+            <BoardSearchComponent onSearch={handleSearch}/>
         </div>
     );
 }

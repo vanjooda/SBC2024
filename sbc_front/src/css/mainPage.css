@@ -21,19 +21,20 @@
     border-radius: 10px;
 }
 
-#slider1 h3{
+#slider1 h2{
     text-align: center;
     color: white;
 }
 
-#slider1 p{
+#slider1 h5{
     text-align: right;
     color: white;
 }
 
-.wrapText {
-    margin-left: 12%;
-  }
+.slider1_text {
+    margin-left: 30%;
+}
+
 
 /* 중간 퀵메뉴 */
 .quickmenuwrap{
@@ -45,36 +46,212 @@
 
 
 /* 서스펜션 브릿지 캠핑장 커뮤니티*/
-#communitywrap{
+.communitywrap{
+    margin-top: 100px;
+    margin-bottom: 100px;
+}
+
+.main_contents_03 {
+    padding-top: 60px;
+    padding-bottom: 60px;
+}
+
+.main_contents_03 h1 {
+    font-size: 25px;
+    text-align: center;
+    font-weight: 700;
+    padding-top: 40px;
+}
+
+.main_contents_03 span.s_title {
+    text-align: center;
+    letter-spacing: 6px;
+    display: block;
+    font-size: 16px;
+    color: #8c8c8c;
+    margin: 30px 0;
+}
+
+div#tabs {
+    width: 49%;
+    height: 346px;
+    padding: 10px 30px 20px;
+    border: 1px solid #ddd;
+    float: left;
+    overflow: hidden;
+}
+
+ul.etabs {
+    border-bottom: 1px solid #ddd;
     display: flex;
-    justify-content: center;
+    justify-content: left;
+    align-items: center;
 }
 
-#noticewrap{
-    min-height: 300px;
-    min-width: 650px;
-    border: 1px solid salmon;
+ul.etabs li {
+    width: 102px;
+    display: inline-block;
+
 }
 
-#guidebox{
-    min-width: 650px;
-    border: 1px solid green;
-    align-content: center;
+ol, ul, li {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 3px;
 }
 
-#guidewrap{
-    height: 130px;
-    border: 1px solid blue;
-    margin-bottom: 20px;
+ul.board_list li a p.date_day {
+    font-size: 15px;
+    display: inline-block;
+    float: left;
+    text-align: center;
+    font-weight: 500;
+    line-height: 23px;
+    margin-right: 10px;
+    color: #9e9e9e;
 }
 
-#qnawrap{
-    height: 130px;
-    border: 1px solid blue;
+span.s_noti_desc {
+    display: block;
+    font-size: 14px;
+    color: #a2a2a2;
+    margin-top: 10px;
+    word-break: keep-all;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
-/* 리뷰 사진 */
-.reviewwrap{
-    min-height: 500px;
-    border: 1px solid red;
+ul.etabs li a {
+    display: block;
+    width: 102px;
+    color: #929292;
+    text-align: center;
+    line-height: 50px;
+    font-size: 19px;
+    font-weight: 500;
+}
+
+a {
+    text-decoration: none;
+}
+
+ul.board_list {
+    width: 100%;
+}
+
+ul.board_list li {
+    clear: both;
+    width: 100%;
+    border-bottom: 1px dashed #ddd;
+}
+
+ul.board_list li a {
+    width: 100%;
+    vertical-align: top;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    /*overflow: hidden;*/
+    display: block;
+    font-size: 15px;
+    padding: 15px 0;
+    color: black;
+}
+
+ul.board_list li a p.date_day {
+    font-size: 15px;
+    display: inline-block;
+    float: left;
+    text-align: center;
+    font-weight: 500;
+    line-height: 23px;
+    margin-right: 10px;
+    color: #9e9e9e;
+}
+
+span.s_noti_desc {
+    display: block;
+    font-size: 15px;
+    color: #a2a2a2;
+    margin-top: 10px;
+    word-break: keep-all;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+ul.board_list li a p.date_day .big_day {
+    font-size: 28px;
+    line-height: 1.2;
+    color: #9e9e9e;
+    font-weight: 500;
+}
+
+.wrap {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.wrap:after {
+    display: block;
+    visibility: hidden;
+    clear: both;
+    content: "";
+}
+
+*, :after, :before {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+/* 시설안내, 문의 및 안내전화 */
+.board_right {
+    float: right;
+    width: 49%;
+}
+
+.facility{
+    background-color: darkseagreen;
+}
+
+.board_right .facility {
+    border: 1px solid #ddd;
+    margin-bottom: -1px;
+    box-sizing: border-box;
+}
+.facility a{
+    color: black;
+}
+.board_right> div {
+    padding: 30px 25px;
+    border: 1px solid #ddd;
+}
+
+.board_right p {
+    font-size: 17px;
+    line-height: 1.3;
+}
+
+.board_right .call p.call_number {
+    font-weight: 600;
+    font-size: 24px;
+    color: #ff9000;
+    margin-bottom: 10px;
+}
+
+.board_right h2 {
+    font-size: 25px;
+    margin: 0 0 15px;
+}
+
+.board_right p {
+    font-size: 17px;
+    line-height: 1.3;
+}
+
+.call{
+    background-color: lightgoldenrodyellow;
 }

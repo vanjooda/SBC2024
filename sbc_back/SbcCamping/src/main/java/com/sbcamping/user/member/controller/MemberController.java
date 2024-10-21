@@ -28,6 +28,13 @@ public class MemberController {
         memberService.addMember(member);
     }
 
+    // 카카오 회원가입
+    @PostMapping("/kakao/")
+    public void kakaoJoin(@RequestBody Member member){
+        log.info("----------카카오 회원가입 요청 : " + member);
+        memberService.kakaoAddMember(member);
+    }
+
 
     // 예약 상태 변경
     @PreAuthorize("hasRole('ROLE_USER')")

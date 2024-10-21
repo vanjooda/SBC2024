@@ -27,7 +27,7 @@ const LoginPage = () => {
                 } else{
                     alert('로그인 성공')
                     if(data.member.memberRole === 'ROLE_ADMIN'){
-                        moveToPath('/api/admin')
+                        moveToPath('/admin')
                     }else{
                         moveToPath('/')
                     }

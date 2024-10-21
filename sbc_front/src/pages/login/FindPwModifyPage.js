@@ -114,7 +114,7 @@ const FindPwModifyPage = () => {
                         <Form.Label column sm={2}>
                             비밀번호
                         </Form.Label>
-                        <Col sm={10}>
+                        <Col sm={7}>
                             <Form.Control type="password"
                                           name="memberPw"
                                           placeholder="영문소문자, 숫자, 특수문자 포함 10-15자"
@@ -136,7 +136,7 @@ const FindPwModifyPage = () => {
                         <Form.Label column sm={2}>
                             재확인
                         </Form.Label>
-                        <Col sm={10} id={"pwrebox"}>
+                        <Col sm={7} id={"pwrebox"}>
                             <Form.Control type="password"
                                           placeholder="영문소문자, 숫자, 특수문자 포함 10-15자"
                                           required
@@ -154,7 +154,7 @@ const FindPwModifyPage = () => {
 
                     <Form.Group as={Row} className="mb-3">
                         <Col sm={{span: 10, offset: 2}} className={"joinbuttonwrap"}>
-                            <Button variant="success" className={"joinButton"} type="submit" onClick={handleSubmit}>비밀번호
+                            <Button variant="success" className="loginbutton_default" type="submit" onClick={handleSubmit}>비밀번호
                                 변경</Button>
                         </Col>
                     </Form.Group>

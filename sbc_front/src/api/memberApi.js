@@ -3,6 +3,11 @@ import axios from "axios";
 const API_SERVER_HOST = 'http://localhost:8080';
 const host = `${API_SERVER_HOST}/api`
 
+const rest_api_key = `9ee86052c294ac349a0fe4f3546cc55a`
+const redirect_uri = `http://localhost:3000/login/kakao`
+const auth_code_path = `https://kauth.kakao.com/oauth/authorize`
+const access_token_url = `https://kauth.kakao.com/oauth/token`
+
 // 로그인(POST) 요청
 export const loginPost = async (loginParam) => {
     const header = {
@@ -18,12 +23,52 @@ export const loginPost = async (loginParam) => {
     return result.data;
 }
 
+// 카카오 로그인 요청
+export const getkakaoLoginLink = () => {
+    console.log("카카오 로그인 요청")
+    return `${auth_code_path}?client_id=${rest_api_key}&redirect_uri=${redirect_uri}&response_type=code`
+}
+
+// 카카오 토큰 가져오기
+export const getKakaoAccessToken = async (authCode) => {
+    const header = {
+        headers :{
+            "Content-Type": "application/x-www-form-urlencoded",
+        }
+    }
+    const params = {
+        grant_type: "authorization_code",
+        client_id: rest_api_key,
+        redirect_uri: redirect_uri,
+        code: authCode,
+    }
+    const res = await axios.post(access_token_url, params, header)
+    const accessToken = res.data.access_token
+    return accessToken
+}
+
+// 카카오 - 자바API 서버 호출
+export const getMemberWithAccessToken = async (accessToken) => {
+    const res = await axios.get(`${host}/auth/kakao?accessToken=${accessToken}`)
+    return res.data
+}
+
 // 회원가입(POST) 요청
 export const joinPost = async (member) => {
     const header = {
         headers:{'Content-Type': 'application/json'}
     }
     const result = await axios.post(`${host}/member/`, JSON.stringify(member), header);
+    console.log(result);
+    return result.data;
+}
+
+// 카카오 회원가입 요청
+export const joinKakaoPost = async (member) => {
+    const header = {
+        headers:{'Content-Type': 'application/json'}
+    }
+    const result = await axios.post(`${host}/member/kakao/`, JSON.stringify(member), header);
     console.log(result);
     return result.data;
 }

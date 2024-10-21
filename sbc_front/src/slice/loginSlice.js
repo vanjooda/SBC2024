@@ -44,7 +44,7 @@ const loginSlice = createSlice({
         builder.addCase(loginPostAsync.fulfilled, (state, action) => {
             // 로그인 완료
             const payload = action.payload;
-            // console.log('payload 값 확인 : ', payload);
+            console.log('payload 값 확인 : ', payload);
 
             if(!payload.error){
                 if(payload.member.memberStatus === 'OFF'){

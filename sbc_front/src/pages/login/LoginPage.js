@@ -3,15 +3,16 @@ import LoginMenu from "../../layouts/LoginMenu";
 import '../../css/login.css'
 import {useState} from "react";
 import useCustomLogin from "../../hooks/useCustomLogin"
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import {getkakaoLoginLink} from "../../api/memberApi";
 
 const LoginPage = () => {
-
-    // test
 
     const [loginParam, setLoginParams] = useState({email : '',pw : ''})
     const { doLogin, moveToPath } = useCustomLogin()
     const navigate = useNavigate();
+
+    const link = getkakaoLoginLink()
 
     const handleChange = (e) => {
         loginParam[e.target.name] = e.target.value;
@@ -50,12 +51,12 @@ const LoginPage = () => {
                                placeholder={" 이메일을 입력해주세요"}></input><br></br>
                         <input type="password" name="pw" value={loginParam.pw} onChange={handleChange}
                                placeholder={" 비밀번호를 입력해주세요."}></input>
-                        <div>
+                        <div className="btn-box">
                             <button onClick={handleClickLogin} className={"loginbutton_default"}>로그인</button>
                             <br></br>
-                            {/*
-                            <button className={"loginbutton_kakao"}>카카오로그인</button>
-                            */}
+                            <div className="loginbutton_kakao">
+                                <Link to={link}>카카오 로그인</Link>
+                            </div>
                         </div>
                     </form>
                 </div>

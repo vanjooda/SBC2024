@@ -2,6 +2,7 @@ package com.sbcamping.user.member.controller;
 
 import com.sbcamping.domain.Member;
 import com.sbcamping.user.member.dto.MemberDTO;
+import com.sbcamping.user.member.repository.MemberRepository;
 import com.sbcamping.user.member.service.MemberService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -18,6 +20,18 @@ public class LoginController {
 
     @Autowired
     private MemberService memberService;
+    @Autowired
+    private MemberRepository memberRepository;
+
+    // 카카오
+    @GetMapping("/kakao")
+    public String[] getMemberFromKakao(String accessToken){
+        Map<String, String> result = memberService.getKakaoMember(accessToken);
+        String res = result.get("result");
+        String memberEmail = result.get("memberEmail"); // 기존 회원일 경우 존재하는 값
+        String kakaoEmail = result.get("kakaoEmail");
+        return new String[] { res, kakaoEmail, memberEmail };
+    }
 
     // 이메일 중복체크 (구조명세서 변경하기)
     @GetMapping("/emailcheck")

@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { getCommentList, postCommentAdd, updateComment, deleteComment } from '../../api/qnaApi'; // 필요한 API 함수 가져오기
+import {getCommentList, postCommentAdd, updateComment, deleteComment, deleteOne} from '../../api/qnaApi'; // 필요한 API 함수 가져오기
 import { useParams } from "react-router-dom";
 import Button from "react-bootstrap/Button";
+import ConfirmModal from "../util/ConfirmModal";
+import {useSelector} from "react-redux";
 
 function CommentComponent() {
     const [serverData, setServerData] = useState([]); // 댓글 목록 상태
@@ -9,6 +11,8 @@ function CommentComponent() {
     const [editingCommentId, setEditingCommentId] = useState(null); // 수정 중인 댓글 ID
     const [editingCommentContent, setEditingCommentContent] = useState(""); // 수정할 댓글 내용
     const { qbID } = useParams(); // URL에서 qbID 가져오기
+
+    const loginState = useSelector((state) => state.loginSlice)
 
     // 댓글 목록 가져오기
     const fetchComments = async () => {
@@ -30,7 +34,7 @@ function CommentComponent() {
 
         const formData = new FormData();
         formData.append("qCommentContent", commentContent);
-        formData.append("memberID", "87"); // 임시 멤버 ID
+        formData.append("memberID", loginState.member.memberId); // 임시 멤버 ID
 
         try {
             const response = await postCommentAdd(qbID, formData); // 댓글 추가 API 호출
@@ -79,17 +83,25 @@ function CommentComponent() {
         }
     };
 
+    // 삭제하기 버튼 클릭 시 호출되는 함수
+    const [isModalOpen, setModalOpen] = useState(false);
+    const [currentID, setCurrentID] = useState(null);
+
     const handleClickDelete = async (commentId) => {
+        setCurrentID(commentId);
+        setModalOpen(true);
+    };
+
+    const confirmDelete = async () => {
         try {
-            const response = await deleteComment(commentId, qbID);
-            if (response && response.RESULT) {
-                console.log('댓글 삭제 성공');
-                fetchComments();
-            } else {
-                console.error('댓글 삭제 실패:', response);
-            }
+            await deleteComment(currentID, qbID);
+            console.log('댓글 삭제 성공');
+            fetchComments(); // 댓글 목록 갱신
         } catch (error) {
-            console.error('오류 발생:', error);
+            alert("삭제 실패: " + error.message);
+            console.error("삭제 중 오류 발생:", error);
+        } finally {
+            setModalOpen(false); // 작업 후 모달 닫기
         }
     };
 
@@ -100,36 +112,48 @@ function CommentComponent() {
             <div>
                 {serverData.length > 0 ? (
                     serverData.map(comment => (
-                        <div key={comment.qcommentID} className="text-gray-700 p-5 m-10 border border-gray-300 rounded-lg">
-                            {comment.member.memberRole === "ROLE_ADMIN" ? (
-                                <p>🛠 관리자</p>
-                            ) : (
-                                <p>작성자 : {comment.member.memberName}</p>
-                            )}
+                        <div key={comment.qcommentID}
+                             className="text-gray-700 p-3 m-5 border border-gray-300 rounded-lg relative">
+                            <div className="flex justify-between items-center mb-2">
+                                {comment.member.memberRole === "ROLE_ADMIN" ? (
+                                    <p className="font-bold text-lg">🛠 관리자</p>
+                                ) : (
+                                    <p className="font-bold text-lg">작성자 : {comment.member.memberName}</p>
+                                )}
+                                <p className="text-sm text-gray-500">{new Date(comment.qcommentDate).toLocaleString('ko-KR', {
+                                    year: 'numeric',
+                                    month: '2-digit',
+                                    day: '2-digit',
+                                    hour: '2-digit',
+                                    minute: '2-digit',
+                                    second: '2-digit',
+                                    hour12: false,
+                                })}</p>
+                            </div>
                             {editingCommentId === comment.qcommentID ? (
-                                <form onSubmit={handleSubmitEdit}>
+                                <form onSubmit={handleSubmitEdit} className="mt-2">
                                     <input
                                         type="text"
                                         value={editingCommentContent}
                                         onChange={handleEditChange}
+                                        className="w-full p-2 border rounded"
                                     />
-                                    <Button type="submit">수정 완료</Button>
-                                    <Button type="button" onClick={() => setEditingCommentId(null)}>취소</Button>
+                                    <div className="flex justify-end mt-2 space-x-2">
+                                        <Button type="submit" className="px-3 py-1">수정 완료</Button>
+                                        <Button type="button" onClick={() => setEditingCommentId(null)}
+                                                className="px-3 py-1">취소</Button>
+                                    </div>
                                 </form>
                             ) : (
                                 <>
-                                    <p>{comment.qcommentContent}</p>
-                                    <p>{new Date(comment.qcommentDate).toLocaleString('ko-KR', {
-                                        year: 'numeric',
-                                        month: '2-digit',
-                                        day: '2-digit',
-                                        hour: '2-digit',
-                                        minute: '2-digit',
-                                        second: '2-digit',
-                                        hour12: false,
-                                    })}</p>
-                                    <Button onClick={() => handleClickEdit(comment.qcommentID, comment.qcommentContent)}>수정</Button>
-                                    <Button onClick={() => handleClickDelete(comment.qcommentID)}>삭제</Button>
+                                    <p className="mb-2">{comment.qcommentContent}</p>
+                                    <div className="flex justify-end space-x-2">
+                                        <Button
+                                            onClick={() => handleClickEdit(comment.qcommentID, comment.qcommentContent)}
+                                            className="px-3 py-1">수정</Button>
+                                        <Button onClick={() => handleClickDelete(comment.qcommentID)}
+                                                className="px-3 py-1">삭제</Button>
+                                    </div>
                                 </>
                             )}
                         </div>
@@ -150,6 +174,13 @@ function CommentComponent() {
                     <Button onClick={handleClickAdd}>댓글 등록</Button>
                 </div>
                 <hr/>
+                <ConfirmModal
+                    isOpen={isModalOpen}
+                    onRequestClose={() => setModalOpen(false)}
+                    onConfirm={confirmDelete}
+                    title="삭제 확인"
+                    message="정말 삭제하시겠습니까?"
+                />
             </div>
         </div>
     );

@@ -41,6 +41,7 @@ const ReservationSalesPage = () => {
     return (
         <>
             <h1>예약 매출 통계</h1>
+            <hr/>
             <nav>
                 <Tabs
                     defaultActiveKey="sales"

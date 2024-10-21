@@ -43,4 +43,6 @@ public interface QnaService {
     // 10. 댓글 삭제
     void removeComment(Long qbcommID, Long qbID);
 
+    // 11. 댓글 정보 가져오기
+    QnaCommentDTO getComment(Long qbcommID);
 }

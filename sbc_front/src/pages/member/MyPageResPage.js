@@ -87,6 +87,12 @@ const MyPageResPage = () => {
         // 최종 취소 사유는 '4'가 선택되면 기타 입력란 값 사용
         const reason = selectedReason === "4" ? otherReason : selectedReason;
 
+        // 유효성 검사 추가
+        if(reason === ''){
+            alert('취소 사유를 선택해주세요')
+            return
+        }
+
         const isConfirmed = window.confirm('예약을 정말 취소하시겠습니까?');
         if (isConfirmed) {
             try {

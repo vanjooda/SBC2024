@@ -4,10 +4,10 @@ import SearchComponent from "./SearchComponent";
 
 const SalesComponent = ({ salesStats, loading, error, dateType, selectedYear, selectedMonth, onSearch }) => {
     const formatCurrency = (amount) => {
-        return new Intl.NumberFormat('ko-KR', { 
-            style: 'currency', 
-            currency: 'KRW', 
-            maximumFractionDigits: 0 
+        return new Intl.NumberFormat('ko-KR', {
+            style: 'currency',
+            currency: 'KRW',
+            maximumFractionDigits: 0
         }).format(amount).replace('₩', '') + '원';
     };
 
@@ -23,7 +23,7 @@ const SalesComponent = ({ salesStats, loading, error, dateType, selectedYear, se
         }
 
         const totalStats = salesStats.totalStats || {};
-        
+
         const renderRows = () => {
             if (dateType === 'year') {
                 return salesStats.stats.map((stat, index) => {
@@ -62,12 +62,11 @@ const SalesComponent = ({ salesStats, loading, error, dateType, selectedYear, se
                     );
                 });
             } else if (dateType === 'day') {
-                // 일간 조회 코드 추가
                 return salesStats.stats
-                    .filter(stat => stat.completedCount > 0 || stat.scheduledCount > 0 || 
-                                    stat.completedAmount > 0 || stat.scheduledAmount > 0)
+                    .filter(stat => stat.completedCount > 0 || stat.scheduledCount > 0 ||
+                        stat.completedAmount > 0 || stat.scheduledAmount > 0)
                     .map(stat => {
-                        const dateStr = stat.resDate; // 이미 'YYYY-MM-DD' 형식으로 가정
+                        const dateStr = stat.resDate;
                         return (
                             <tr key={dateStr}>
                                 <td>{dateStr}</td>
@@ -99,10 +98,21 @@ const SalesComponent = ({ salesStats, loading, error, dateType, selectedYear, se
         );
     };
 
+    useEffect(() => {
+        const today = new Date();
+        const currentYear = today.getFullYear();
+        const currentMonth = today.getMonth() + 1; // getMonth는 0부터 시작하므로 +1
+
+        // 초기 검색 수행
+        if (dateType === 'month') {
+            onSearch(currentYear, currentMonth);
+        }
+    }, [onSearch, dateType]);
+
     return (
         <>
             <SearchComponent onSearch={onSearch} />
-            <hr/>
+            <hr />
             <Table bordered>
                 <thead>
                 <tr>

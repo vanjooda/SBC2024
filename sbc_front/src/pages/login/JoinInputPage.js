@@ -3,14 +3,22 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
 import {useEffect, useState} from "react";
-import {emailCheck, joinPost} from "../../api/memberApi";
+import {emailCheck, joinKakaoPost, joinPost} from "../../api/memberApi";
 import useCustomLogin from "../../hooks/useCustomLogin";
 import Modal from 'react-bootstrap/Modal';
 import "../../css/join.css";
 import ListGroup from "react-bootstrap/ListGroup";
+import {useLocation} from "react-router-dom";
 
 
 const JoinInputPage = () => {
+
+    // ------카카오 최초 로그인인 경우 ----------파라미터 가져오기 (memberEmail)
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const getkakaoEmail = queryParams.get('memberEmail');
+    const [kakaoEmail, setKakaoEmail] = useState(getkakaoEmail);
+
     // 부트스트랩 변수
     const [validated, setValidated] = useState(false);
     const [modalShow, setModalShow] = useState(false);
@@ -29,10 +37,11 @@ const JoinInputPage = () => {
     const [isPwdMatch, setIsPwdMatch] = useState(true);
     // 이메일 중복체크용 변수
     const [emailCheckResult, setEmailCheckResult] = useState("");
+    const [isEmailValid, setIsEmailValid] = useState(false);
 
     const [members, setMembers] = useState(
         {
-            memberEmail : '',
+            memberEmail : kakaoEmail || '',
             memberPw : '',
             memberName : '',
             memberPhone : '',
@@ -73,9 +82,10 @@ const JoinInputPage = () => {
             event.preventDefault();
         }
 
-        if(emailCheckResult===''){
+        if(emailCheckResult === "" || !isEmailValid){
             alert('이메일 중복체크를 해주세요.')
             event.preventDefault();
+            return
         }
 
         // 부트스트랩 동작
@@ -83,11 +93,31 @@ const JoinInputPage = () => {
             event.stopPropagation();
         } else{
             // 유효성 검사를 통과했으면 API 요청
-            handleClickJoin(members)
+            if(!kakaoEmail){
+                handleClickJoin(members)
+            } else if(kakaoEmail){
+                handleClickKakaoJoin(members)
+            }
         }
         setValidated(true);
     };
 
+    // 카카오 회원가입 Submit 동작
+    const handleClickKakaoJoin = async (members) => {
+        try {
+            console.log(members)
+            const action = joinKakaoPost(members);
+            console.log(action)
+            if(action.error){
+                console.log('회원가입 실패')
+                alert('회원가입 실패')
+            } else{
+                moveToPath('/join/welcome')
+            }
+        } catch (error){
+            console.log('서버 요청 실패 : ', error)
+        }
+    }
 
     // 유효성 검사를 모두 통과하면 회원가입 Submit 동작
     const handleClickJoin = async (members) => {
@@ -96,7 +126,7 @@ const JoinInputPage = () => {
             console.log(action)
             if(action.error) {
                 console.log('회원가입 실패')
-                alert('회원 가입 실패')
+                alert('회원가입 실패')
             } else {
                 // 성공하면 가입 완료 페이지로 이동
                 moveToPath('/join/welcome')
@@ -137,13 +167,16 @@ const JoinInputPage = () => {
 
             if(action.msg === 'enable'){
                 setEmailCheckResult('사용 가능한 이메일입니다.');
+                setIsEmailValid(true)
             } else if (action.msg === 'disable' || email === ''){
                 setEmailCheckResult(<>
                     사용 <span style={{ color: 'red'}}>불가능</span>한 이메일입니다.
                 </>);
                 emailElement[0].value = '';
+                setIsEmailValid(false)
             } else{
                 setEmailCheckResult('이메일 중복 체크 중 오류가 발생했습니다.')
+                setIsEmailValid(false)
             }
         } catch (error) {
             setEmailCheckResult('이메일 중복 체크 중 오류가 발생했습니다.')
@@ -250,6 +283,7 @@ const JoinInputPage = () => {
                                           required
                                           maxLength={50}
                                           onChange={handleChangeJoin}
+                                          value={kakaoEmail ? kakaoEmail : ''}
                             />
                             <Form.Control.Feedback type="invalid">
                                 이메일을 확인해주세요.
@@ -267,47 +301,51 @@ const JoinInputPage = () => {
                     </Form.Group>
 
                     {/* 비밀번호 */}
+                    { !kakaoEmail && (
+                        <>
                     <Form.Group as={Row} className="mb-3" >
-                    <Form.Label column sm={3}>
-                        비밀번호
-                    </Form.Label>
-                    <Col sm={7}>
-                        <Form.Control type="password"
-                                      name="memberPw"
-                                      placeholder="영문소문자, 숫자, 특수문자 포함 10-15자"
-                                      required
-                                      id={"password"}
-                                      minLength={10}
-                                      pattern={"^(?=.*[a-z])((?=.*\\d)|(?=.*\\W)).{10,15}$"}
-                                      onChange={handleChangeJoin}
-                                      isInvalid={!isPwdValid}
-                        />
-                        <Form.Control.Feedback type="invalid">
-                            비밀번호를 확인해주세요.
-                        </Form.Control.Feedback>
-                    </Col>
+                        <Form.Label column sm={3}>
+                            비밀번호
+                        </Form.Label>
+                        <Col sm={7}>
+                            <Form.Control type="password"
+                                          name="memberPw"
+                                          placeholder="영문소문자, 숫자, 특수문자 포함 10-15자"
+                                          required
+                                          id={"password"}
+                                          minLength={10}
+                                          pattern={"^(?=.*[a-z])((?=.*\\d)|(?=.*\\W)).{10,15}$"}
+                                          onChange={handleChangeJoin}
+                                          isInvalid={!isPwdValid}
+                            />
+                            <Form.Control.Feedback type="invalid">
+                                비밀번호를 확인해주세요.
+                            </Form.Control.Feedback>
+                        </Col>
                     </Form.Group>
 
                     {/* 비밀번호 재확인 */}
                     <Form.Group as={Row} className="mb-3" >
-                    <Form.Label column sm={3}>
-                        비밀번호 확인
-                    </Form.Label>
-                    <Col sm={7} id={"pwrebox"}>
-                        <Form.Control type="password"
-                                      placeholder="영문소문자, 숫자, 특수문자 포함 10-15자"
-                                      required
-                                      id={"password_re"}
-                                      minLength={10}
-                                      pattern={"^(?=.*[a-z])((?=.*\\d)|(?=.*\\W)).{10,15}$"}
-                                      onChange={handleConfirmPwd}
-                                      isInvalid={!isPwdMatch}
-                        />
-                        <Form.Control.Feedback type="invalid">
-                            비밀번호가 일치하지 않습니다.
-                        </Form.Control.Feedback>
-                    </Col>
+                        <Form.Label column sm={3}>
+                            비밀번호 확인
+                        </Form.Label>
+                        <Col sm={7} id={"pwrebox"}>
+                            <Form.Control type="password"
+                                          placeholder="영문소문자, 숫자, 특수문자 포함 10-15자"
+                                          required
+                                          id={"password_re"}
+                                          minLength={10}
+                                          pattern={"^(?=.*[a-z])((?=.*\\d)|(?=.*\\W)).{10,15}$"}
+                                          onChange={handleConfirmPwd}
+                                          isInvalid={!isPwdMatch}
+                            />
+                            <Form.Control.Feedback type="invalid">
+                                비밀번호가 일치하지 않습니다.
+                            </Form.Control.Feedback>
+                        </Col>
                     </Form.Group>
+                        </>
+                    )}
 
                     {/* 이름 */}
                     <Form.Group as={Row} className="mb-3" >

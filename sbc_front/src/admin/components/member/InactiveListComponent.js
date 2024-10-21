@@ -66,11 +66,14 @@ function InactiveListComponent() {
     return (
         <div>
             <div>
-            <p>휴면 회원 리스트 </p> 
+            <h1>휴면 회원 리스트 </h1>
+                <hr/>
                 <MemberSearchComponent onSearch={handleSearch}/>
+                <hr/>
             </div>
-           <Table bordered hover responsive className="text-sm">
-            <tr>
+           <Table bordered hover responsive className="text-sm-center">
+            <thead>
+               <tr>
                 <th>회원번호</th>
                 <th>이메일</th>
                 <th>이름</th>
@@ -80,6 +83,8 @@ function InactiveListComponent() {
                 <th>지역</th>
                 <th>가입일</th>
             </tr>
+            </thead>
+               <tbody>
             {serverData.dtoList.map(member =>
                 <tr key={member.memberID}>
                     <td>{member.memberID}</td>
@@ -92,6 +97,7 @@ function InactiveListComponent() {
                     <td>{formatDate(new Date(member.memberRegDate))}</td>
                 </tr>
             )}
+               </tbody>
            </Table>
             <BootstrapPagination
                 currentPage={currentPage}

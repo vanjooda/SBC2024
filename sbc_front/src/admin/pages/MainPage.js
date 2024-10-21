@@ -3,8 +3,10 @@ import Button from 'react-bootstrap/Button';
 import Carousel from 'react-bootstrap/Carousel';
 import '../css/mainPage.css';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import useCustomLogin from "../../hooks/useCustomLogin";
 
 const MainPage = () => {
+
     return(
         <BasicLayout>
 

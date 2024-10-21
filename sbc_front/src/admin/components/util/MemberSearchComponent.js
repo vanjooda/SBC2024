@@ -38,27 +38,25 @@ function MemberSearchComponent({onSearch}) {
 
     return (
         <>
-        <div>
-        <select id="type" name="type" value={type} onChange={handleTypeChange}>
-            <option value="name">회원명</option>
-            <option value="phone">핸드폰</option>
-            <option value="email">이메일</option>
-        </select>
-    <input id="keyword" name="keyword" type="text" placeholder={placeholder} value={keyword}
-           onChange={(e) => setKeyword(e.target.value)}
-           onKeyDown={handleKeyDown}/>
-    <Button onClick={handleSearch}>조회</Button>
-    </div>
-            {/*시간이 허락한다면 정렬 기능 구현하겠음*/}
-    {/*        <div>*/ }
-    {/*<select id="order" name="order" onChange={handleOrderChange}>*/}
-    {/*        <option value="memberID">회원번호</option>*/}
-    {/*        <option value="memberName">회원명</option>*/}
-    {/*        <option value="-memberRegDate">최근 가입일</option>*/}
-    {/*        <option value="memberRegDate">최초 가입일</option>*/}
-    {/*    </select> */}
-    {/*</div>*/}
-    </>
+            <div className="d-flex align-items-center">
+                <select id="type" name="type" value={type} onChange={handleTypeChange} className="me-2">
+                    <option value="name">회원명</option>
+                    <option value="phone">핸드폰</option>
+                    <option value="email">이메일</option>
+                </select>
+                <input
+                    id="keyword"
+                    name="keyword"
+                    type="text"
+                    placeholder={placeholder}
+                    value={keyword}
+                    onChange={(e) => setKeyword(e.target.value)}
+                    onKeyDown={handleKeyDown}
+                    className="form-control me-2 w-50" // Bootstrap의 form-control 클래스 추가
+                />
+                <Button onClick={handleSearch}>조회</Button>
+            </div>
+        </>
     );
 }
 

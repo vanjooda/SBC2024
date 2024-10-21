@@ -3,7 +3,7 @@ import { Pagination } from 'react-bootstrap';
 const BootstrapPagination = ({ currentPage, totalPages, onPageChange }) => {
     const handlePageChange = (page) => {
         if (page >= 1 && page <= totalPages) {
-            onPageChange(page);
+            onPageChange(page); // 페이지 변경 처리
         }
     };
 
@@ -18,7 +18,7 @@ const BootstrapPagination = ({ currentPage, totalPages, onPageChange }) => {
                 <Pagination.Item
                     key={index + 1}
                     active={currentPage === index + 1}
-                    onClick={() => handlePageChange(index + 1)}
+                    onClick={() => handlePageChange(index + 1)} // 클릭 시 페이지 변경
                 >
                     {index + 1}
                 </Pagination.Item>
