@@ -3,6 +3,8 @@ package com.sbcamping.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 
 
@@ -33,7 +35,7 @@ public class CamperBoardComment {   // 캠퍼 게시판 댓글
     private String cCommentContent; // 댓글 내용
 
     @Column(name = "Cboard_Comment_Date",nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date cCommentDate;  // 댓글 작성일
+    @Temporal(TemporalType.DATE)
+    private LocalDate cCommentDate;  // 댓글 작성일
 
 }

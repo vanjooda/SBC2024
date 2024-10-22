@@ -20,7 +20,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -165,7 +165,7 @@ public class CamperServiceImpl implements CamperService {
                 .collect(Collectors.toList());
         return result;
     }
-    //댓글 등록
+
     @Override
     public Long registerComment(
             String auth,
@@ -185,14 +185,14 @@ public class CamperServiceImpl implements CamperService {
                             .member(member)
                             .cBoard(camperBoard)
                             .cCommentContent(dto.getCCommentContent())
-                            .cCommentDate(new Date())
+                            .cCommentDate(LocalDate.now())
                             .build()
             ).getCCommentID();
         } else {
             return 0L;
         }
     }
-    //댓글 수정
+
     @Override
     public void modifyComment(CamperBoardCommentDTO dto) {
         Optional<CamperBoardComment> result = commentRepository.findById(dto.getCommentId());
@@ -203,11 +203,11 @@ public class CamperServiceImpl implements CamperService {
             camperBoardComment.setCCommentContent(updatedContent);
         }
 
-        camperBoardComment.setCCommentDate(new Date());
+        camperBoardComment.setCCommentDate(LocalDate.now());
 
         commentRepository.save(camperBoardComment);
     }
-    //댓글 삭제
+
     @Override
     public void removeComment(Long commentId) {
         commentRepository.deleteById(commentId);

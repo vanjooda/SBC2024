@@ -14,6 +14,7 @@ const AddComponent = () => {
         cBoardCategory: '',
         cBoardTitle: '',
         cBoardContent: '',
+        cBoardDate: new Date().toISOString().split('T')[0],
         file: null
     }
 
@@ -49,6 +50,7 @@ const AddComponent = () => {
         formData.append("cBoardTitle", cboard.cBoardTitle);
         formData.append("cBoardCategory", cboard.cBoardCategory);
         formData.append("cBoardContent", cboard.cBoardContent);
+        formData.append("cBoardDate", cboard.cBoardDate);
         formData.append("member", cboard.member.memberId);
         if(cboard.file != null){
             formData.append("file", cboard.file)

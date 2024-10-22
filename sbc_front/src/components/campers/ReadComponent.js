@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { getOne, deleteOne, getMemberById, prefix } from "../../api/camperApi"; // API 함수 가져오기
 import useCustomMove from "../../hooks/useCustomMove";
-import CommentComponent from "./CommentComponent";
-import useCustomLogin from "../../hooks/useCustomLogin"; // CommentComponent 추가
+import CommentComponent from "./CommentComponent"; // CommentComponent 추가
 
 const initState = {
     member: {
@@ -19,7 +18,6 @@ const initState = {
 };
 
 const ReadComponent = ({ cBoardId }) => {
-
     const [camper, setCamper] = useState(initState); // 게시글 데이터 상태
     const [loading, setLoading] = useState(true); // 로딩 상태
     const { moveToList, moveToModify } = useCustomMove(); // 페이지 이동 훅
