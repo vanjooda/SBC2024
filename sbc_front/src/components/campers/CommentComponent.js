@@ -7,7 +7,6 @@ import {
 } from "../../api/camperApi"; // 필요한 API 함수 가져오기
 import { useParams } from "react-router-dom";
 import Button from "react-bootstrap/Button";
-import Card from "react-bootstrap/Card"; // Card 컴포넌트 추가
 
 function CommentComponent() {
   const [serverData, setServerData] = useState([]); // 댓글 목록 상태
@@ -70,7 +69,11 @@ function CommentComponent() {
       const formData = new FormData();
       formData.append("cCommentContent", editingCommentContent);
 
-      const response = await updateComment(editingCommentId, formData, cBoardId);
+      const response = await updateComment(
+        editingCommentId,
+        formData,
+        cBoardId,
+      );
       console.log("응답 데이터:", response); // 확인
       if (response && response.RESULT) {
         console.log("댓글 수정 성공");
@@ -100,63 +103,47 @@ function CommentComponent() {
   };
 
   return (
+    <div>
+      {/* 댓글 목록 렌더링 */}
       <div>
-        {/* 댓글 목록 렌더링 */}
+        {serverData.length > 0 ? (
+          serverData.map((comment) => (
+            <div key={comment.cCommentID} className="text-gray-700 p-5 m-10 border border-gray-300 rounded-lg">
+              <p>작성자 : {comment.member.memberName}</p>
+              {editingCommentId === comment.cCommentID ? (
+                <form onSubmit={handleSubmitEdit}>
+                  <input type="text" value={comment.cCommentContent} onChange={handleEditChange}/>
+                  <Button type="submit">수정 완료</Button>
+                  <Button type="button" onClick={() => setEditingCommentId(null)}>취소</Button>
+                </form>
+              ) : (
+                <>
+                  <p>{comment.cCommentContent}</p>
+                  <p>{comment.cCommentDate}</p>
+                  <Button onClick={() => handleClickEdit( comment.cCommentID, comment.cCommentContent)}>수정</Button>
+                  <Button onClick={() => handleClickDelete(comment.cCommentID)}>삭제</Button>
+                </>
+              )}
+            </div>
+          ))
+        ) : (
+          <p>댓글이 없습니다.</p>
+        )}
+        <hr />
+        {/* 댓글 입력 폼 */}
         <div>
-          {serverData.length > 0 ? (
-              serverData.map((comment) => (
-                  <Card key={comment.cCommentID} className="mb-3"> {/* 카드 추가 */}
-                    <Card.Body>
-                      <Card.Title>작성자: {comment.member.memberName}</Card.Title>
-                      {editingCommentId === comment.cCommentID ? (
-                          <form onSubmit={handleSubmitEdit}>
-                            <input
-                                type="text"
-                                value={editingCommentContent}
-                                onChange={handleEditChange}
-                            />
-                            <Button type="submit">수정 완료</Button>
-                            <Button type="button" onClick={() => setEditingCommentId(null)}>취소</Button>
-                          </form>
-                      ) : (
-                          <>
-                            <Card.Text>{comment.cCommentContent}</Card.Text>
-                            <Card.Text>
-                              {new Date(comment.cCommentDate).toLocaleString("ko-KR", {
-                                year: "numeric",
-                                month: "2-digit",
-                                day: "2-digit",
-                                hour: "2-digit",
-                                minute: "2-digit",
-                                second: "2-digit",
-                                hour12: false,
-                              })}
-                            </Card.Text>
-                            <Button onClick={() => handleClickEdit(comment.cCommentID, comment.cCommentContent)}>수정</Button>
-                            <Button onClick={() => handleClickDelete(comment.cCommentID)}>삭제</Button>
-                          </>
-                      )}
-                    </Card.Body>
-                  </Card>
-              ))
-          ) : (
-              <p>댓글이 없습니다.</p>
-          )}
-          <hr />
-          {/* 댓글 입력 폼 */}
-          <div>
-            <input
-                type="text"
-                value={commentContent}
-                onChange={handleChange}
-                placeholder="내용을 입력하세요"
-                required
-            />
-            <Button onClick={handleClickAdd}>댓글 등록</Button>
-          </div>
-          <hr />
+          <input
+            type="text"
+            value={commentContent}
+            onChange={handleChange}
+            placeholder="내용을 입력하세요"
+            required
+          />
+          <Button onClick={handleClickAdd}>댓글 등록</Button>
         </div>
+        <hr />
       </div>
+    </div>
   );
 }
 
