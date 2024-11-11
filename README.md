@@ -100,6 +100,7 @@ WAS |![Apache Tomcat 9.0](https://img.shields.io/badge/Apache%20Tomcat%20-F8DC75
 ASGI Server | ![Uvicorn](https://img.shields.io/badge/Uvicorn-7DD3FC?style=for-the-badge&logo=uvicorn&logoColor=black) 
 IDE | ![SQL Developer](https://img.shields.io/badge/SQL%20Developer-000?style=for-the-badge&logo=oracle&logoColor=white) ![IntelliJ IDEA](https://img.shields.io/badge/IntelliJ%20IDEA-000?style=for-the-badge&logo=intellijidea&logoColor=white)
 Version Control | ![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=GitHub&logoColor=white) ![Notion](https://img.shields.io/badge/notion-000000?style=for-the-badge&logo=notion&logoColor=white)
+![YouTube](https://img.shields.io/badge/YOUTUBE-FF0000?style=for-the-badge&logo=youtube&logoColor=white)
 
 <hr/>
 
