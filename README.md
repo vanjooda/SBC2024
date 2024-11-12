@@ -5,7 +5,7 @@
 - 반주연 : <ukalliope@gmail.com>
 - 이효진 : <leehyo9493@naver.com>
 - 정상호 : <fkvmxpf94@gmail.com>
-- 피성표 : <pisungpyo@naver.com>
+- 피성표 : <pisungpyo@gmail.com>
 - 하경민 : <xzxz2563@gmail.com>
 
 <hr/>
